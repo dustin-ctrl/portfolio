@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "K.Takahashi Portfolio",
-  description: "My personal portfolio website",
+  description: "髙橋 孝太朗のポートフォリオサイトです。My personal portfolio website",
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
