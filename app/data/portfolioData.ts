@@ -49,7 +49,7 @@ export const PROJECTS_DATA: AppProject[] = [
     id: "deposit-system",
     platform: ["Web","ServiceNow"],
     status: "OFFLINE",
-    githubUrl: "https://github.com/yourusername/deposit-system",
+    githubUrl: "https://github.com/dustin-ctrl/nowReception",
     title: '「now Reception」 ~フロント業務改革~',
     year: "2025",
     role: "ハッカソン",
@@ -59,11 +59,11 @@ export const PROJECTS_DATA: AppProject[] = [
     problem: "プロのパートナー企業がひしめくServiceNow公式ハッカソンにおいて、唯一の学生チームとして参戦。全くの初対面のメンバーと行う初めての開発で、リーダーとして進捗管理やタスク分散に非常に苦労しながらも、強固なワークフローを構築。結果、全体9位という健闘を見せ、審査員からも高評価を獲得して『ブログ賞』を受賞しました。",
     architecture: "スマート回収ボックス（IoT）や外部決済システムとのリアルタイム同期を想定し、IntegrationHub（REST API）とFlow Designerをフル活用。インプットから返金処理までのライフサイクルを自動化しました。",
     highlight: "プロのエンジニアを相手に、学生ならではの「地方課題への着眼点」と「徹底したロジック」で堂々と渡り合えることを証明したマイルストーンです。",
-    imageUrl: "https://images.unsplash.com/photo-1532996122724-e3c3c5d2814b?q=80&w=1000&auto=format&fit=crop",
-        galleryImages: [
-      "/images/hinavi.png",         
-      "/images/hinavi.png",   
-      "/images/hinavi.png",   
+    imageUrl: "/images/nowreception1.png",
+        galleryImages: [    
+      "/images/nowreception2.png",
+      "/images/nowreception3.png",
+      "/images/nowreception4.png",  
     ],
   },
   {
