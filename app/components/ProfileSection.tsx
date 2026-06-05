@@ -72,7 +72,7 @@ const ProfileSection = React.forwardRef(
 
           {/* ENGINEER & METTYA TIGERS FAN */}
           <div className="mt-4 sm:mt-6 flex flex-wrap gap-x-3 gap-y-1 text-xs sm:text-sm font-mono font-black tracking-widest text-slate-900 uppercase">
-            <span>FULL-STACK ENGINEER</span>
+            <span>ENGINEER</span>
             <span className="text-slate-300">/</span>
             <span className="text-amber-500 bg-black px-1.5 py-0.5 rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:p-0 sm:bg-transparent sm:text-slate-900 sm:border-0 sm:shadow-none">
               METTYA TIGERS FAN
