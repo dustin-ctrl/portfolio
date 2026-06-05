@@ -247,15 +247,14 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {displayImages.map((imgUrl: string, idx: number) => (
                     <div 
                       key={idx} 
-                      className="w-full relative bg-slate-50 rounded-2xl overflow-hidden border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] aspect-[16/10] sm:aspect-[4/3] group transition-all duration-150 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      // 💡 高さを固定せず、中身（画像）の高さに自動で合わせるため `h-auto` に変更
+                      className="w-full relative bg-slate-50 rounded-2xl overflow-hidden border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] group transition-all duration-150 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     >
-                      <Image
+                      <img
                         src={imgUrl}
                         alt={`${project.title} screenshot ${idx + 1}`}
-                        fill
-                        sizes="(max-w-5xl) 100vw, 1000px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-102"
-                        unoptimized
+                        // 💡 w-full h-auto で、画像本来のアスペクト比を完全に維持して表示します
+                        className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
                       />
                     </div>
                   ))}

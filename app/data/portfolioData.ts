@@ -19,9 +19,9 @@ export const PROJECTS_DATA: AppProject[] = [
     highlight: "前年のハッカソンでの「実装が不完全で全国を逃した」という猛烈な悔しさをバネに、フロントエンドの完成度とリアルタイムな共有ロジックを限界まで磨き上げ、リベンジを果たした執念のプロダクトです。全国の舞台で発表の仕方、プロダクトの見せ方にこだわり抜くことの大切さを学びました。",
     imageUrl: "/images/hinavi.png", 
     galleryImages: [
-      "/images/hinavi.png",         
-      "/images/hinavi.png",   
-      "/images/hinavi.png",   
+      "/images/hinavi2.png",         
+      "/images/hinavi3.png",   
+      "/images/hinavi4.png",   
     ],
   },
   {
@@ -70,8 +70,8 @@ export const PROJECTS_DATA: AppProject[] = [
     id: "subsc-manager",
     platform: ["Mobile"],
     status: "OFFLINE",
-    githubUrl: "https://github.com/yourusername/subsc-manager",
-    title: "サブスク管理アプリ「subVision」",
+    githubUrl: "https://github.com/jphacks/hs_2407",
+    title: "サブスク管理アプリ「SubVision」",
     year: "2024",
     role: "ハッカソン",
     tech: ["Kotlin", "Android Studio"],
@@ -81,10 +81,8 @@ export const PROJECTS_DATA: AppProject[] = [
     architecture: "Androidネイティブの高速な動作と堅牢性を重視し、Kotlinで実装。この時の「実装力不足への悔しさ」が、その後のモダンWebやServiceNowのスキルを爆発的に引き上げるトリガーとなりました。",
     highlight: "アイデアを形にする『実装力』の重要性を骨身に染みて理解した、自身のエンジニアリングのターニングポイントです。",
     imageUrl: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=1000&auto=format&fit=crop",
-        galleryImages: [
-      "/images/hinavi.png",         
-      "/images/hinavi.png",   
-      "/images/hinavi.png",   
+    galleryImages: [
+      "/images/subvision1.png",          
     ],
   }
 ];
