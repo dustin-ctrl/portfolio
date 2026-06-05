@@ -103,9 +103,23 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:16px_16px]" />
             <div className="relative z-10 flex justify-between items-center gap-4 mb-4 select-none">
               <div className="flex flex-wrap items-center gap-2 font-mono">
-                <span className="px-2.5 py-0.5 text-[10px] font-black tracking-widest uppercase rounded border border-black bg-black text-white">
-                  {project.platform}
-                </span>
+                <div className="inline-flex flex-wrap gap-1">
+                  {Array.isArray(project.platform) ? (
+                    project.platform.map((plat) => (
+                      <span 
+                        key={plat} 
+                        className="px-2.5 py-0.5 text-[10px] font-black tracking-widest uppercase rounded border border-black bg-black text-white"
+                      >
+                        {plat}
+                      </span>
+                    ))
+                  ) : (
+                    // 💡 過去のデータがまだ文字列のままであってもバグらないためのセーフティ
+                    <span className="px-2.5 py-0.5 text-[10px] font-black tracking-widest uppercase rounded border border-black bg-black text-white">
+                      {project.platform}
+                    </span>
+                  )}
+                </div>
                 <span className="text-[11px] font-black text-slate-400 tracking-wider">
                   {project.year} // {project.role}
                 </span>
@@ -120,9 +134,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <span className="text-[9px] font-mono font-black tracking-widest text-slate-400 block uppercase mb-1 select-none">
                 Project Title
               </span>
-              <h4 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-snug uppercase">
-                {project.title}
-              </h4>
+              <h4 
+                // 👇 一番最後に `[&_span]:text-slate-900` を追加しました！
+                className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-snug uppercase [&_span]:text-slate-900"
+                dangerouslySetInnerHTML={{ __html: project.title }}
+              />
             </div>
             <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-2 w-full">
               <div className="flex flex-wrap gap-2 max-w-full sm:max-w-xl">

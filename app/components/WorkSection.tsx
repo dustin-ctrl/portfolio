@@ -28,10 +28,21 @@ const WorkSection = React.forwardRef(
 
     const filteredProjects = PROJECTS_DATA.filter((project) => {
       if (selectedCategory === "ALL") return true;
-      if (selectedCategory === "MOBILE") {
-        return project.platform.toUpperCase() === "MOBILE" || project.platform.toUpperCase() === "ANDROID";
+
+      // 💡 プラットフォームを全て文字列の配列として扱い、小文字に統一します
+      const platforms = (Array.isArray(project.platform) ? project.platform : [project.platform])
+        .map((p) => String(p).toLowerCase());
+
+      // 選択されたカテゴリーも小文字にして比較する
+      const lowerCategory = selectedCategory.toLowerCase();
+
+      // 📱 MOBILEが選択されたときは、配列内に「mobile」または「android」が含まれているか
+      if (lowerCategory === "mobile") {
+        return platforms.includes("mobile") || platforms.includes("android");
       }
-      return project.platform.toUpperCase() === selectedCategory;
+
+      // 🔍 それ以外は、選択されたカテゴリーが含まれているか
+      return platforms.includes(lowerCategory);
     });
 
     useEffect(() => {
@@ -156,7 +167,25 @@ const WorkSection = React.forwardRef(
                         <div className="flex items-center justify-between gap-2 mb-1.5">
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs sm:text-sm font-mono text-slate-950 font-black">0{index + 1} // </span>
-                            <span className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">{project.platform}</span>
+
+                            {/* 👇 ここから配列対応のループ処理に変更 */}
+                            <div className="inline-flex flex-wrap gap-1">
+                              {Array.isArray(project.platform) ? (
+                                project.platform.map((plat) => (
+                                  <span 
+                                    key={plat} 
+                                    className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white"
+                                  >
+                                    {plat}
+                                  </span>
+                                ))
+                              ) : (
+                                // 💡 万が一、まだ配列になっていない過去のデータ（文字列）があってもバグらないようにする対策
+                                <span className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">
+                                  {project.platform}
+                                </span>
+                              )}
+                            </div>
                             {project.status === "ONLINE" ? (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-wider rounded border-2 border-black bg-emerald-50 text-emerald-700"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />ONLINE</span>
                             ) : (
@@ -165,7 +194,11 @@ const WorkSection = React.forwardRef(
                           </div>
                           <span className="text-[10px] sm:text-sm font-mono font-black text-slate-400">{project.year}</span>
                         </div>
-                        <h3 className="text-sm sm:text-lg md:text-xl font-black text-slate-900 tracking-tight mb-1.5 line-clamp-1 leading-snug group-hover:text-amber-500 transition-colors">{project.title}</h3>
+                        <h3 
+                          className="text-sm sm:text-lg md:text-xl font-black text-slate-900 tracking-tight mb-1.5 line-clamp-1 leading-snug group-hover:text-amber-500 transition-colors"
+                          // 👇 `{project.title}` の代わりに、これを追加します！
+                          dangerouslySetInnerHTML={{ __html: project.title }}
+                        />
                       </div>
                       
                       <div className="flex-1 w-full relative bg-slate-100 rounded-lg sm:rounded-xl overflow-hidden border-2 border-black mb-2 min-h-[120px] sm:min-h-[180px]">

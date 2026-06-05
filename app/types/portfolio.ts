@@ -3,7 +3,7 @@
 // app/types/portfolio.ts
 export interface AppProject {
   id: string;
-  platform: "Web" | "ServiceNow" | "Mobile" | "Art";
+  platform: ("Web" | "ServiceNow" | "Mobile" | "Art")[];
   status: "ONLINE" | "OFFLINE";
   linkUrl?: string; // ONLINEの場合の、実際に触れるURL
   githubUrl?: string; 
