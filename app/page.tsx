@@ -11,7 +11,7 @@ import ProfileSection from "./components/ProfileSection";
 import WorkSection from "./components/WorkSection";
 import ProjectModal from "./components/ProjectModal";
 
-export default function Home() {
+export function HomeContent() {
   // ─── 状態管理（State） ───
   const [activeSection, setActiveSection] = useState<"profile" | "work" | "none">("none");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -159,4 +159,8 @@ export default function Home() {
 
     </div>
   );
+}
+
+export default function Home() {
+  return <HomeContent />;
 }

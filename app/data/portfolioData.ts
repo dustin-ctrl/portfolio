@@ -84,5 +84,27 @@ export const PROJECTS_DATA: AppProject[] = [
     galleryImages: [
       "/images/subvision1.png",          
     ],
+  },
+  {
+  id: "fitlink",
+  platform: ["Mobile"],
+  status: "OFFLINE", // もしくは審査提出前なら「OFFLINE」
+  linkUrl: "https://apps.apple.com/app/idXXXXXX", // App Store公開後のURL
+  githubUrl: "https://github.com/yourusername/FitLink", // 必要に応じて設定
+  title: "FitLink",
+  year: "2026",
+  role: "個人開発（企画 / UI・UXデザイン / iOSアプリ実装）",
+  tech: ["Swift", "SwiftUI", "SwiftData", "AVKit", "StoreKit 2"],
+  comments: ["#フィットネス", "#動画連動型"],
+  overview: "「動画を見ながら運動する」という現代の宅トレ・ジムトレスタイルに特化した、iOS用プレミアム・フィットネストラッキングアプリ。ただ動画を流すだけでなく、ユーザーが自身のオリジナルメニューやトレーニングコースをシームレスに管理・記録できる体験を提供します。",
+  problem: "YouTubeなどの動画を見ながら筋トレやストレッチをする際、「どの動画をどの順番で、何分間やるか」の管理が難しく、毎回アプリを行き来する手間にストレスがありました。また、一般的なフィットネスアプリは機能や色彩が過多で、毎日スマートに継続したくなるような、大人のガジェット感に馴染む美しいUIデザインの選択肢が不足していました。",
+  architecture: "SwiftUIを全面的に採用したモダンな宣言型UIに加え、データの永続化にはiOS最新のローカルデータベース『SwiftData』を活用。サーバー不要で高速かつプライバシーに配慮したデータ保持を実現しています。また、動画再生にはAVKit、将来的なマネタイズ（テーマ解放やコース制限解除）を見据えて最新のStoreKit 2を組み込める拡張性の高いアーキテクチャで設計されています。",
+  highlight: "ディープ・アイスブルーを基調とした、サイバー感と高級スポーツブランドのような洗練さを融合したダークテーマUI。iPhone標準のドラムロール（ホイール）と朝昼夜のクイックショートカットを融合させた、絶対に画面崩れを起こさない頑丈な『スマートリマインダー』。そして、洗練されたアプリアイコンとアプリ内デザインが見事にシンクロする、一貫したブランド体験が最大の強みです。",
+  imageUrl: "/images/fitlink-cover.png", // 表紙用（今回作成した美しいアイスブルーのアイコン画像を推奨）
+  galleryImages: [
+    "/images/projects/fitlink-dashboard.png",
+  ],
+  termsUrl: "/terms", 
+  privacyUrl: "/privacy"
   }
 ];

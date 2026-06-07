@@ -18,6 +18,10 @@ export interface AppProject {
   highlight: string;
   imageUrl: string; // 表紙用のメイン画像
   galleryImages: string[]; // モーダル内のスライダー等で使用する画像配列（1枚の場合も同じパスを複数入れる運用）
+
+  // 💡 ─── ここから下を追加 ───
+  termsUrl?: string;   // 利用規約用のオプショナルなURL（/terms など）
+  privacyUrl?: string; // プライバシーポリシー用のオプショナルなURL（/privacy など）
 }
 
 export interface GalleryItem {

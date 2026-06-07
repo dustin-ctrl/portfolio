@@ -21,7 +21,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   // タッチ開始
   const handleTouchStart = (e: React.TouchEvent) => {
     const scrollContainer = containerRef.current;
-    // 内側のスクロールが最上部（0）のときだけスワイプでのクローズを有効にする
     if (scrollContainer && scrollContainer.scrollTop === 0) {
       setTouchStartY(e.touches[0].clientY);
       setIsSwiping(true);
@@ -35,12 +34,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     const currentY = e.touches[0].clientY;
     const deltaY = currentY - touchStartY;
 
-    // 下方向への引っ張りだけを受け付ける（上方向はガード）
     if (deltaY > 0) {
-      // 指の動きに100%追従させると軽すぎるので、少し重み（抵抗）をつけてヌルッとさせる
       setCurrentTranslateY(deltaY * 0.8);
-      
-      // スワイプ中はモーダル本来のスクロールやバウンスを止める
       if (e.cancelable) e.preventDefault();
     }
   };
@@ -49,15 +44,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const handleTouchEnd = () => {
     if (!isSwiping) return;
 
-    // 80ピクセル以上下に引っ張っていたら、そのままCloseを実行
     if (currentTranslateY > 80) {
       onClose();
     } else {
-      // 戻すときはパッと戻らずにCSS transitionで滑らかに戻す
       setCurrentTranslateY(0);
     }
     
-    // リセット
     setTouchStartY(null);
     setIsSwiping(false);
   };
@@ -70,7 +62,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       {/* 基準コンテナ */}
       <div 
         className="relative w-full sm:w-11/12 max-w-5xl h-full sm:h-auto max-h-[100vh] sm:max-h-[90vh] flex flex-col pointer-events-none animate-[scaleUp_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]"
-        // 💡 リアルタイムに指の動き（TranslateY）をモーダル全体に反映させる
         style={{
           transform: currentTranslateY > 0 ? `translateY(${currentTranslateY}px)` : undefined,
           transition: !isSwiping ? "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none"
@@ -86,7 +77,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           ✕
         </button>
 
-        {/* ─── 💡 スワイプイベントを付与した白い紙面コンテナ ─── */}
+        {/* 白い紙面コンテナ */}
         <div 
           ref={containerRef}
           className="bg-white border-4 border-black rounded-none sm:rounded-3xl w-full h-full overflow-y-auto shadow-none sm:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col p-6 sm:p-8 md:p-10 pointer-events-auto" 
@@ -95,7 +86,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* 💡 スマホ版のときだけ、最上部に「ここを引っ張れるよ」という無骨なノッチバーを表示 */}
+          {/* スマホ版ノッチバー */}
           <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4 block sm:hidden opacity-30 flex-shrink-0" />
 
           {/* 最上部：Tech Stack & Project ボード */}
@@ -114,7 +105,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       </span>
                     ))
                   ) : (
-                    // 💡 過去のデータがまだ文字列のままであってもバグらないためのセーフティ
                     <span className="px-2.5 py-0.5 text-[10px] font-black tracking-widest uppercase rounded border border-black bg-black text-white">
                       {project.platform}
                     </span>
@@ -135,7 +125,6 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 Project Title
               </span>
               <h4 
-                // 👇 一番最後に `[&_span]:text-slate-900` を追加しました！
                 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-snug uppercase [&_span]:text-slate-900"
                 dangerouslySetInnerHTML={{ __html: project.title }}
               />
@@ -152,8 +141,40 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   </div>
                 ))}
               </div>
-              {project.githubUrl && (
-                <div className="flex-shrink-0 self-start sm:self-auto pt-2 sm:pt-0">
+
+              {/* 💡 ─── ボタン配置エリア（GITHUB・規約・ポリシーを横並びに結合） ─── */}
+              <div className="flex flex-wrap items-center gap-3 flex-shrink-0 self-start sm:self-auto pt-2 sm:pt-0">
+                
+                {/* 📜 利用規約ボタン（データにある場合のみ出現） */}
+                {project.termsUrl && (
+                  <a 
+                    href={project.termsUrl} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border-2 border-black rounded-xl text-[10px] sm:text-xs font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-mono tracking-wider cursor-pointer"
+                  >
+                    <span>TERMS</span>
+                    <span className="text-slate-400 font-normal text-[9px]">(規約)</span>
+                    <span>→</span>
+                  </a>
+                )}
+
+                {/* 🛡️ プライバシーポリシーボタン（データにある場合のみ出現） */}
+                {project.privacyUrl && (
+                  <a 
+                    href={project.privacyUrl} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border-2 border-black rounded-xl text-[10px] sm:text-xs font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-mono tracking-wider cursor-pointer"
+                  >
+                    <span>PRIVACY</span>
+                    <span className="text-slate-400 font-normal text-[9px]">(方針)</span>
+                    <span>→</span>
+                  </a>
+                )}
+
+                {/* 元々のGITHUBを見るボタン */}
+                {project.githubUrl && (
                   <a 
                     href={project.githubUrl} 
                     target="_blank" 
@@ -165,8 +186,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     </svg>
                     GITHUBを見る
                   </a>
-                </div>
-              )}
+                )}
+              </div>
+
             </div>
           </div>
 
@@ -190,7 +212,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* 2カラム配置 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               
-              {/* 02 / 課題の本質 ＆ ソリューション */}
+              {/* 02 / 課題の本質 */}
               <div className="group relative border-2 border-black rounded-none p-5 bg-white overflow-hidden flex flex-col transition-all duration-150 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.2s_forwards]">
                 <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.09] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:14px_14px] transition-opacity" />
                 <div className="relative z-10 border-b-2 border-black pb-1.5 mb-3 flex items-center justify-between">
@@ -205,7 +227,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 />
               </div>
               
-              {/* 03 / アーキテクチャ構成 ＆ UI/UX */}
+              {/* 03 / アーキテクチャ構成 */}
               <div className="group relative border-2 border-black rounded-none p-5 bg-white overflow-hidden flex flex-col transition-all duration-150 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.25s_forwards]">
                 <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.09] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:14px_14px] transition-opacity" />
                 <div className="relative z-10 border-b-2 border-black pb-1.5 mb-3 flex items-center justify-between">
@@ -221,7 +243,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
             </div>
             
-            {/* 04 / 執念のエンジニアリング・ハイライト */}
+            {/* 04 / エンジニアリング・ハイライト */}
             <div className="group relative border-2 border-black rounded-none p-5 bg-white overflow-hidden transition-all duration-150 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.35s_forwards]">
               <div className="absolute inset-0 opacity-[0.06] group-hover:opacity-[0.12] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:12px_12px] transition-opacity" />
               <div className="relative z-10 border-b-2 border-black pb-1.5 mb-3 flex items-center justify-between">
@@ -247,13 +269,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {displayImages.map((imgUrl: string, idx: number) => (
                     <div 
                       key={idx} 
-                      // 💡 高さを固定せず、中身（画像）の高さに自動で合わせるため `h-auto` に変更
                       className="w-full relative bg-slate-50 rounded-2xl overflow-hidden border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] group transition-all duration-150 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     >
                       <img
                         src={imgUrl}
                         alt={`${project.title} screenshot ${idx + 1}`}
-                        // 💡 w-full h-auto で、画像本来のアスペクト比を完全に維持して表示します
                         className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
                       />
                     </div>
