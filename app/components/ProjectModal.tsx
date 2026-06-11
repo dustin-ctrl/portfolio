@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import Image from "next/image";
 import { AppProject } from "../types/portfolio";
 
 interface ProjectModalProps {
@@ -12,14 +11,17 @@ interface ProjectModalProps {
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const displayImages = (project as any).galleryImages || [project.imageUrl];
 
-  // ─── 💡 スワイプ関連の状態管理 ───
+  // ─── 画像拡大用の状態管理 ───
+  const [activeImageUrl, setActiveImageUrl] = useState<string | null>(null);
+
+  // ─── スワイプ関連の状態管理 ───
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [currentTranslateY, setCurrentTranslateY] = useState<number>(0);
   const [isSwiping, setIsSwiping] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // タッチ開始
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (activeImageUrl) return;
     const scrollContainer = containerRef.current;
     if (scrollContainer && scrollContainer.scrollTop === 0) {
       setTouchStartY(e.touches[0].clientY);
@@ -27,254 +29,149 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
     }
   };
 
-  // タッチ移動中
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isSwiping || touchStartY === null) return;
-    
     const currentY = e.touches[0].clientY;
     const deltaY = currentY - touchStartY;
-
     if (deltaY > 0) {
       setCurrentTranslateY(deltaY * 0.8);
       if (e.cancelable) e.preventDefault();
     }
   };
 
-  // タッチ終了
   const handleTouchEnd = () => {
     if (!isSwiping) return;
-
     if (currentTranslateY > 80) {
       onClose();
     } else {
       setCurrentTranslateY(0);
     }
-    
     setTouchStartY(null);
     setIsSwiping(false);
   };
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/40 backdrop-blur-md animate-[fadeIn_0.2s_ease-out_forwards]" 
+      className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 md:p-6 bg-slate-900/50 backdrop-blur-md animate-[fadeIn_0.2s_ease-out_forwards]" 
       onClick={onClose}
     >
-      {/* 基準コンテナ */}
       <div 
-        className="relative w-full sm:w-11/12 max-w-5xl h-full sm:h-auto max-h-[100vh] sm:max-h-[90vh] flex flex-col pointer-events-none animate-[scaleUp_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]"
+        className="relative w-full sm:w-11/12 max-w-6xl h-full sm:h-auto max-h-[100vh] sm:max-h-[92vh] flex flex-col pointer-events-none animate-[scaleUp_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]"
         style={{
           transform: currentTranslateY > 0 ? `translateY(${currentTranslateY}px)` : undefined,
           transition: !isSwiping ? "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)" : "none"
         }}
       >
-        
-        {/* 常に右上に固定されるバツボタン */}
+        {/* クローズボタン */}
         <button 
           onClick={onClose} 
-          className="absolute top-4 right-4 sm:-top-4 sm:-right-4 bg-white border-3 border-black text-black w-10 h-10 rounded-full flex items-center justify-center font-black text-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all cursor-pointer z-[120] font-mono select-none pointer-events-auto" 
-          aria-label="Close details"
+          className="absolute top-4 right-4 sm:-top-3 sm:-right-3 bg-white border-3 border-black text-black w-10 h-10 rounded-full flex items-center justify-center font-black text-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-[120] pointer-events-auto"
         >
           ✕
         </button>
 
-        {/* 白い紙面コンテナ */}
+        {/* メイン紙面（スクロールコンテナ） */}
         <div 
           ref={containerRef}
-          className="bg-white border-4 border-black rounded-none sm:rounded-3xl w-full h-full overflow-y-auto shadow-none sm:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col p-6 sm:p-8 md:p-10 pointer-events-auto" 
+          className="bg-white border-4 border-black rounded-none sm:rounded-2xl w-full h-full overflow-y-auto shadow-none sm:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col p-4 sm:p-8 lg:p-10 pointer-events-auto select-none" 
           onClick={(e) => e.stopPropagation()}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* スマホ版ノッチバー */}
-          <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4 block sm:hidden opacity-30 flex-shrink-0" />
+          {/* スマホ版ノッチ */}
+          <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4 block sm:hidden opacity-20 flex-shrink-0" />
 
-          {/* 最上部：Tech Stack & Project ボード */}
-          <div className="block w-full h-auto min-h-fit relative border-4 border-black rounded-2xl bg-slate-50 p-5 sm:p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden mb-8 mt-2 sm:mt-0 flex-shrink-0 animate-[slideDown_0.4s_cubic-bezier(0.16,1,0.3,1)_forwards]">
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:16px_16px]" />
-            <div className="relative z-10 flex justify-between items-center gap-4 mb-4 select-none">
-              <div className="flex flex-wrap items-center gap-2 font-mono">
-                <div className="inline-flex flex-wrap gap-1">
-                  {Array.isArray(project.platform) ? (
-                    project.platform.map((plat) => (
-                      <span 
-                        key={plat} 
-                        className="px-2.5 py-0.5 text-[10px] font-black tracking-widest uppercase rounded border border-black bg-black text-white"
-                      >
-                        {plat}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="px-2.5 py-0.5 text-[10px] font-black tracking-widest uppercase rounded border border-black bg-black text-white">
-                      {project.platform}
+          <div className="space-y-6 w-full">
+            
+            {/* ─── HEADER SECTION ─── */}
+            <div className="border-b-4 border-black pb-5 mt-2 sm:mt-0">
+              <div className="flex items-center justify-between gap-4 mb-2">
+                <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-xs font-black">
+                  <span className="px-2 py-0.5 bg-black text-white rounded">
+                    {Array.isArray(project.platform) ? project.platform[0] : project.platform}
+                  </span>
+                  <span className="text-slate-400">{project.year} // {project.role}</span>
+                </div>
+                <span className={`text-[9px] sm:text-[10px] font-mono font-black px-2 py-0.5 rounded border-2 border-black ${
+                  project.status === "ONLINE" ? "bg-emerald-400" : "bg-slate-200 text-slate-600"
+                }`}>
+                  {project.status}
+                </span>
+              </div>
+
+              <h4 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2.5" dangerouslySetInnerHTML={{ __html: project.title }} />
+              <p className="text-xs sm:text-sm lg:text-base font-bold text-slate-700 leading-snug bg-slate-50 border-l-4 border-black p-3 rounded-r-lg">{project.overview}</p>
+
+              {/* 技術タグ & リンク */}
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mt-4">
+                <div className="flex flex-wrap gap-1">
+                  {project.tech.map((techName) => (
+                    <span key={techName} className="bg-slate-100 text-slate-800 text-[9px] sm:text-[10px] font-mono font-black px-2 py-0.5 rounded border border-slate-300">
+                      #{techName}
                     </span>
+                  ))}
+                </div>
+                
+                {/* ─── 📱 スマホアプリ用リンクボタンエリア ─── */}
+                <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto pointer-events-auto">
+                  
+                  {/* ① 利用規約ボタン */}
+                  {(project as any).termsUrl && (
+                    <a 
+                      href={(project as any).termsUrl} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-cyan-400 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer"
+                    >
+                      TERMS →
+                    </a>
+                  )}
+
+                  {/* ② プライバシーポリシーボタン */}
+                  {(project as any).privacyUrl && (
+                    <a 
+                      href={(project as any).privacyUrl} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-indigo-300 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer"
+                    >
+                      PRIVACY →
+                    </a>
+                  )}
+
+                  {/* ③ GitHubボタン */}
+                  {project.githubUrl && (
+                    <a 
+                      href={project.githubUrl} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-white border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-slate-900 cursor-pointer"
+                    >
+                      GITHUB →
+                    </a>
                   )}
                 </div>
-                <span className="text-[11px] font-black text-slate-400 tracking-wider">
-                  {project.year} // {project.role}
-                </span>
               </div>
-              <span className={`text-[10px] font-mono font-black px-2 py-0.5 rounded border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex-shrink-0 ${
-                project.status === "ONLINE" ? "bg-emerald-400 text-black" : "bg-slate-200 text-slate-600"
-              }`}>
-                {project.status}
-              </span>
-            </div>
-            <div className="relative z-10 mb-5 pr-8">
-              <span className="text-[9px] font-mono font-black tracking-widest text-slate-400 block uppercase mb-1 select-none">
-                Project Title
-              </span>
-              <h4 
-                className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-snug uppercase [&_span]:text-slate-900"
-                dangerouslySetInnerHTML={{ __html: project.title }}
-              />
-            </div>
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-2 w-full">
-              <div className="flex flex-wrap gap-2 max-w-full sm:max-w-xl">
-                {project.tech.map((techName) => (
-                  <div 
-                    key={techName}
-                    className="bg-black text-white text-[10px] sm:text-xs font-mono font-black tracking-widest px-2.5 py-1 rounded-lg border border-slate-800 shadow-[2px_2px_0px_0px_rgba(245,158,11,1)] select-none"
-                  >
-                    <span className="text-amber-400 mr-0.5">#</span>
-                    {techName}
-                  </div>
-                ))}
-              </div>
+            </div> {/* ⬅️ ここに正しい位置で閉じタグを修復しました */}
 
-              {/* 💡 ─── ボタン配置エリア（GITHUB・規約・ポリシーを横並びに結合） ─── */}
-              <div className="flex flex-wrap items-center gap-3 flex-shrink-0 self-start sm:self-auto pt-2 sm:pt-0">
-                
-                {/* 📜 利用規約ボタン（データにある場合のみ出現） */}
-                {project.termsUrl && (
-                  <a 
-                    href={project.termsUrl} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border-2 border-black rounded-xl text-[10px] sm:text-xs font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-mono tracking-wider cursor-pointer"
-                  >
-                    <span>TERMS</span>
-                    <span className="text-slate-400 font-normal text-[9px]">(規約)</span>
-                    <span>→</span>
-                  </a>
-                )}
-
-                {/* 🛡️ プライバシーポリシーボタン（データにある場合のみ出現） */}
-                {project.privacyUrl && (
-                  <a 
-                    href={project.privacyUrl} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border-2 border-black rounded-xl text-[10px] sm:text-xs font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-mono tracking-wider cursor-pointer"
-                  >
-                    <span>PRIVACY</span>
-                    <span className="text-slate-400 font-normal text-[9px]">(方針)</span>
-                    <span>→</span>
-                  </a>
-                )}
-
-                {/* 元々のGITHUBを見るボタン */}
-                {project.githubUrl && (
-                  <a 
-                    href={project.githubUrl} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-black rounded-xl text-xs font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-mono tracking-wider cursor-pointer"
-                  >
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.166 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.008.069-.008 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                    </svg>
-                    GITHUBを見る
-                  </a>
-                )}
-              </div>
-
-            </div>
-          </div>
-
-          {/* コンテンツエリア */}
-          <div className="space-y-6 text-slate-700 leading-relaxed w-full select-none">
-            
-            {/* 01 / プロジェクト概要 */}
-            <div className="group relative border-2 border-black rounded-none p-5 bg-white overflow-hidden transition-all duration-150 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.1s_forwards]">
-              <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.09] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:14px_14px] transition-opacity" />
-              <div className="relative z-10 border-b-2 border-black pb-1.5 mb-3 flex items-center justify-between">
-                <span className="text-[11px] font-mono font-black uppercase tracking-widest text-black px-1.5 py-0.5 rounded transition-colors group-hover:bg-black group-hover:text-white">
-                  [SECTION 01 // OVERVIEW]
-                </span>
-                <span className="text-[9px] font-mono text-slate-400 font-bold tracking-tighter">ISSUE N°01</span>
-              </div>
-              <p className="relative z-10 font-black text-slate-900 text-base sm:text-lg md:text-xl leading-snug">
-                {project.overview}
-              </p>
-            </div>
-
-            {/* 2カラム配置 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              
-              {/* 02 / 課題の本質 */}
-              <div className="group relative border-2 border-black rounded-none p-5 bg-white overflow-hidden flex flex-col transition-all duration-150 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.2s_forwards]">
-                <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.09] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:14px_14px] transition-opacity" />
-                <div className="relative z-10 border-b-2 border-black pb-1.5 mb-3 flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-black uppercase tracking-widest text-black px-1.5 py-0.5 rounded transition-colors group-hover:bg-black group-hover:text-white">
-                    [SECTION 02 // PROBLEM & SOLUTION]
-                  </span>
-                  <span className="text-[9px] font-mono text-slate-400 font-bold tracking-tighter">PAGE.02</span>
-                </div>
-                <p 
-                  className="relative z-10 font-medium text-xs sm:text-sm text-slate-800 whitespace-pre-wrap leading-relaxed flex-1 text-justify"
-                  dangerouslySetInnerHTML={{ __html: project.problem }} 
-                />
-              </div>
-              
-              {/* 03 / アーキテクチャ構成 */}
-              <div className="group relative border-2 border-black rounded-none p-5 bg-white overflow-hidden flex flex-col transition-all duration-150 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.25s_forwards]">
-                <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.09] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:14px_14px] transition-opacity" />
-                <div className="relative z-10 border-b-2 border-black pb-1.5 mb-3 flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-black uppercase tracking-widest text-black px-1.5 py-0.5 rounded transition-colors group-hover:bg-black group-hover:text-white">
-                    [SECTION 03 // ARCHITECTURE & UX]
-                  </span>
-                  <span className="text-[9px] font-mono text-slate-400 font-bold tracking-tighter">PAGE.03</span>
-                </div>
-                <p className="relative z-10 font-medium text-xs sm:text-sm text-slate-800 whitespace-pre-wrap leading-relaxed flex-1 text-justify">
-                  {project.architecture}
-                </p>
-              </div>
-
-            </div>
-            
-            {/* 04 / エンジニアリング・ハイライト */}
-            <div className="group relative border-2 border-black rounded-none p-5 bg-white overflow-hidden transition-all duration-150 ease-out shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.35s_forwards]">
-              <div className="absolute inset-0 opacity-[0.06] group-hover:opacity-[0.12] pointer-events-none bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:12px_12px] transition-opacity" />
-              <div className="relative z-10 border-b-2 border-black pb-1.5 mb-3 flex items-center justify-between">
-                <span className="text-[11px] font-mono font-black uppercase tracking-widest text-black px-1.5 py-0.5 rounded transition-colors group-hover:bg-black group-hover:text-white">
-                  ★ [SECTION 04 // ENGINEERING HIGHLIGHT]
-                </span>
-                <span className="text-[9px] font-mono text-slate-400 font-bold tracking-tighter">SPECIAL_REPORT</span>
-              </div>
-              <p className="relative z-10 text-slate-900 font-black text-sm sm:text-base md:text-lg leading-relaxed text-justify">
-                {project.highlight}
-              </p>
-            </div>
-
-            {/* 05 / ギャラリー */}
+            {/* ─── 01. GALLERY SECTION ─── */}
             {displayImages.length > 0 && (
-              <div className="pt-6 space-y-4 w-full opacity-0 scale-98 animate-[staggerIn_0.4s_cubic-bezier(0.16,1,0.3,1)_0.45s_forwards]">
-                <div className="border-t-2 border-dashed border-slate-200 pt-6" />
-                <span className="inline-block text-[11px] font-mono font-black uppercase tracking-widest text-black border-b-2 border-black pb-1">
-                  [SECTION 05 // VISUAL & SCREENSHOTS]
+              <div className="space-y-2">
+                <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
+                  // 01. GALLERY <span className="text-[9px] text-amber-500 lowercase normal-case font-bold ml-1">(click to enlarge)</span>
                 </span>
-                
-                <div className="grid grid-cols-1 gap-6 max-w-4xl mx-auto w-full">
-                  {displayImages.map((imgUrl: string, idx: number) => (
+                <div className="flex sm:grid sm:grid-cols-3 gap-4 overflow-x-auto sm:overflow-x-visible pb-3 sm:pb-0 scrollbar-none snap-x snap-mandatory">
+                  {displayImages.slice(0, 3).map((imgUrl: string, idx: number) => (
                     <div 
                       key={idx} 
-                      className="w-full relative bg-slate-50 rounded-2xl overflow-hidden border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] group transition-all duration-150 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      onClick={() => setActiveImageUrl(imgUrl)}
+                      className="w-[280px] sm:w-full flex-shrink-0 snap-center relative h-48 sm:h-56 lg:h-64 bg-slate-100 rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center cursor-zoom-in active:scale-[0.98] transition-transform"
                     >
-                      <img
-                        src={imgUrl}
-                        alt={`${project.title} screenshot ${idx + 1}`}
-                        className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.01]"
+                      <img 
+                        src={imgUrl} 
+                        alt="screenshot" 
+                        className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 hover:scale-[1.03]" 
                       />
                     </div>
                   ))}
@@ -282,28 +179,159 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </div>
             )}
 
+            {/* ─── 02. METRICS & ROLES SECTION ─── */}
+            <div className="space-y-2">
+              <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
+                // 02. METRICS & ROLES
+              </span>
+              <div className="bg-slate-50 border-2 border-black rounded-xl p-4 lg:p-5 grid grid-cols-1 md:grid-cols-5 gap-4 lg:gap-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <div className="md:col-span-2 grid grid-cols-3 gap-2 text-center">
+                  <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-center">
+                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase">DURATION</span>
+                    <span className="text-xs lg:text-sm font-black text-black">{(project as any).duration || "3日間"}</span>
+                  </div>
+                  <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-center">
+                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase">TEAM</span>
+                    <span className="text-xs lg:text-sm font-black text-black">{(project as any).teamSize || "4名"}</span>
+                  </div>
+                  <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-center">
+                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase">AWARD</span>
+                    <span className="text-[10px] lg:text-[11px] font-black text-emerald-600 leading-tight">{(project as any).achievement || "全国出場"}</span>
+                  </div>
+                </div>
+                <div className="md:col-span-3 flex items-center justify-between border-t-2 md:border-t-0 md:border-l border-dashed border-slate-300 pt-3 md:pt-0 md:pl-4 lg:pl-6">
+                  <div>
+                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase mb-1">// MY ROLES</span>
+                    <div className="flex flex-wrap gap-1">
+                      {((project as any).myRoles || [project.role]).map((r: string) => (
+                        <span key={r} className="bg-white border border-black text-[9px] lg:text-[10px] font-bold px-1.5 py-0.5 rounded">
+                          {r}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-right flex-shrink-0 ml-2">
+                    <span className="block text-[8px] lg:text-[9px] font-mono font-black text-slate-400">CONTRIBUTION</span>
+                    <span className="text-xl lg:text-2xl font-mono font-black text-blue-600">{(project as any).contributionRatio || "70%"}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ─── 03. PROJECT OVERVIEW SECTION ─── */}
+            <div className="space-y-2">
+              <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
+                // 03. PROJECT OVERVIEW
+              </span>
+              <div className="bg-grid-paper border-2 border-black rounded-xl p-5 md:p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                  <div className="space-y-2">
+                    <span className="text-xs sm:text-sm font-mono font-black text-rose-600 flex items-center gap-1">
+                      ✕ 解決した課題・背景
+                    </span>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed text-justify px-1" dangerouslySetInnerHTML={{ __html: project.problem }} />
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="text-xs sm:text-sm font-mono font-black text-emerald-600 flex items-center gap-1">
+                      ✓ 実装した主な機能
+                    </span>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed text-justify whitespace-pre-wrap px-1">
+                      {(project as any).features || "・主なシステム機能一覧が入ります。"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              
+            {/* ─── 04. ENGINEERING HIGHLIGHT SECTION ─── */}
+            <div className="space-y-2">
+              <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
+                // 04. ENGINEERING HIGHLIGHT
+              </span>
+              <div className="bg-slate-900 text-white rounded-xl p-4 lg:p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black">
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed text-justify mb-4">
+                  {project.highlight}
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] sm:text-[11px] font-mono">
+                  <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                    <span className="block text-amber-400 font-bold mb-0.5">【課題】</span>
+                    {(project as any).highlightProblem || "課題の定義"}
+                  </div>
+                  <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                    <span className="block text-cyan-400 font-bold mb-0.5">【実装】</span>
+                    {(project as any).highlightApproach || "技術的アプローチ"}
+                  </div>
+                  <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+                    <span className="block text-emerald-400 font-bold mb-0.5">【工夫】</span>
+                    {(project as any).highlightBenefit || "得られた効果・メリット"}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ─── 05. SYSTEM ARCHITECTURE SECTION ─── */}
+            <div className="space-y-2">
+              <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
+                // 05. SYSTEM ARCHITECTURE
+              </span>
+              <div className="bg-white border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-[11px] font-mono font-bold text-center mb-3">
+                  <div className="px-2 py-0.5 bg-black text-white rounded">User</div>
+                  <div className="text-slate-300 font-black rotate-90 sm:rotate-0">→</div>
+                  <div className="px-2 py-0.5 bg-white border border-slate-300 rounded">{(project.tech && project.tech[1]) || "Frontend"}</div>
+                  <div className="text-slate-300 font-black rotate-90 sm:rotate-0">→</div>
+                  <div className="px-2 py-0.5 bg-white border border-slate-300 rounded">{(project.tech && project.tech[0]) || "Backend"}</div>
+                  <div className="text-slate-300 font-black rotate-90 sm:rotate-0">→</div>
+                  <div className="px-2 py-0.5 bg-slate-200 text-slate-700 rounded">Database</div>
+                </div>
+                <p className="font-medium text-[10px] lg:text-[11px] text-slate-500 text-justify leading-relaxed">
+                  {project.architecture}
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
-
       </div>
 
-      {/* カスタムキーフレーム */}
+      {/* 画像拡大ライトボックス */}
+      {activeImageUrl && (
+        <div 
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm cursor-zoom-out animate-[fadeIn_0.15s_ease-out_forwards]"
+          onClick={() => setActiveImageUrl(null)}
+        >
+          <div 
+            className="relative max-w-5xl max-h-[85vh] bg-white border-4 border-black p-2 sm:p-3 rounded-none sm:rounded-2xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-[scaleUp_0.2s_ease-out_forwards]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setActiveImageUrl(null)}
+              className="absolute -top-3 -right-3 bg-rose-400 border-2 border-black text-black w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-[210]"
+            >
+              ✕
+            </button>
+            <img 
+              src={activeImageUrl} 
+              alt="Enlarged screenshot" 
+              className="max-w-full max-h-[80vh] object-contain rounded-none sm:rounded-xl"
+            />
+          </div>
+        </div>
+      )}
+
       <style dangerouslySetInnerHTML={{__html: `
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes scaleUp {
-          from { opacity: 0; transform: scale(0.96) translateY(10px); }
-          to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes staggerIn {
-          from { opacity: 0; transform: translateY(15px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleUp { from { opacity: 0; transform: scale(0.97) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .bg-grid-paper {
+          background-color: #ffffff;
+          background-image: 
+            linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+          background-size: 16px 16px;
         }
       `}} />
     </div>

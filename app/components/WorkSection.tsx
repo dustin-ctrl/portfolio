@@ -29,19 +29,15 @@ const WorkSection = React.forwardRef(
     const filteredProjects = PROJECTS_DATA.filter((project) => {
       if (selectedCategory === "ALL") return true;
 
-      // 💡 プラットフォームを全て文字列の配列として扱い、小文字に統一します
       const platforms = (Array.isArray(project.platform) ? project.platform : [project.platform])
         .map((p) => String(p).toLowerCase());
 
-      // 選択されたカテゴリーも小文字にして比較する
       const lowerCategory = selectedCategory.toLowerCase();
 
-      // 📱 MOBILEが選択されたときは、配列内に「mobile」または「android」が含まれているか
       if (lowerCategory === "mobile") {
         return platforms.includes("mobile") || platforms.includes("android");
       }
 
-      // 🔍 それ以外は、選択されたカテゴリーが含まれているか
       return platforms.includes(lowerCategory);
     });
 
@@ -88,10 +84,8 @@ const WorkSection = React.forwardRef(
     return (
       <section id="work" ref={ref} className="pt-2 pb-6 sm:pb-16 scroll-mt-16 w-full flex flex-col items-center overflow-hidden relative">
         
-        {/* ─── 💡 綺麗に整理：WORKは左端、ボタンは右揃え（両端揃え）にするヘッダー ─── */}
+        {/* ヘッダーエリア */}
         <div className="w-full max-w-5xl mx-auto px-5 sm:px-12 md:px-24 mb-4 sm:mb-8 select-none flex flex-row flex-nowrap items-center justify-between gap-3 shrink-0">
-          
-          {/* 左側：「WORK」の見出し */}
           <div className="relative pb-1.5 sm:pb-4 shrink-0">
             <h2 className={`text-4xl sm:text-6xl md:text-8xl font-black tracking-[-0.04em] uppercase transition-all duration-700 ease-out ${activeSection === "work" ? "text-transparent [text-stroke:1.5px_black] md:[text-stroke:2.5px_black] [-webkit-text-stroke:1.5px_black] md:[-webkit-text-stroke:2.5px_black]" : "text-slate-900"}`}>
               WORK
@@ -99,7 +93,6 @@ const WorkSection = React.forwardRef(
             <div className={`absolute bottom-0 left-0 h-1 sm:h-1.5 bg-black transition-all duration-700 ease-out ${activeSection === "work" ? "w-12 sm:w-36" : "w-6 sm:w-16"}`} />
           </div>
 
-          {/* 右側：分類ボタン */}
           <div className="flex flex-row flex-nowrap justify-end gap-1.5 sm:gap-2.5 font-mono text-[10px] sm:text-xs font-black tracking-wider sm:tracking-widest shrink-0 mt-1 flex-1">
             {(["ALL", "WEB", "MOBILE"] as Category[]).map((category) => {
               const isActive = selectedCategory === category;
@@ -116,17 +109,16 @@ const WorkSection = React.forwardRef(
               );
             })}
           </div>
-
         </div>
 
-        {/* カルーセルコンテナ（PC矢印が綺麗に収まるよう左右に md:px-24 を確保） */}
+        {/* カルーセル本体 */}
         <div className="w-full relative flex items-center justify-center min-h-[440px] sm:min-h-[500px] md:min-h-[580px] px-2 sm:px-4 md:px-24 lg:px-28">
           
-          {/* 左矢印ボタン (PC) */}
+          {/* 左矢印 */}
           {filteredProjects.length > 0 && (
             <button 
               onClick={localHandlePrev} 
-              className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-40 bg-white border-2 border-black text-black w-12 h-12 rounded-full items-center justify-center font-black text-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[-3px] active:translate-y-[3px] active:shadow-none transition-all cursor-pointer" 
+              className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-40 bg-white border-2 border-black text-black w-12 h-12 rounded-full items-center justify-center font-black text-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[5px] hover:-translate-y-[52%] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[-1px] active:translate-y-[-48%] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer" 
               aria-label="Previous Project"
             >
               ←
@@ -138,7 +130,8 @@ const WorkSection = React.forwardRef(
               NO PROJECTS FOUND IN THIS CATEGORY.
             </div>
           ) : (
-            <div className="relative w-full max-w-[340px] xs:w-[92vw] sm:max-w-[540px] md:max-w-[720px] h-[430px] sm:h-[460px] md:h-[520px]">
+            /* 💡 カード全体の高さを固定(h-full)にして、伸縮を子要素に任せるコンテナ設定 */
+            <div className="relative w-full max-w-[340px] xs:w-[92vw] sm:max-w-[540px] md:max-w-[720px] h-[440px] sm:h-[480px] md:h-[540px]">
               {filteredProjects.map((project, index) => {
                 let offset = index - currentIndex;
                 const total = filteredProjects.length;
@@ -159,28 +152,25 @@ const WorkSection = React.forwardRef(
                     onClick={() => isCenter && onSelectProject(project)} 
                     onTouchStart={isCenter ? handleTouchStart : undefined}
                     onTouchEnd={isCenter ? handleTouchEnd : undefined}
-                    className={`absolute inset-0 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-3 sm:p-6 md:p-8 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group ${transformClass} touch-pan-y`}
+                    className={`absolute inset-0 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group ${transformClass} touch-pan-y`}
                   >
                     
-                    <div className="flex-1 flex flex-col min-h-0 justify-between">
-                      <div className="shrink-0">
+                    {/* カード内上部 */}
+                    <div className="flex-1 flex flex-col min-h-0 justify-start">
+                      
+                      {/* メタ情報 */}
+                      <div className="shrink-0 mb-2">
                         <div className="flex items-center justify-between gap-2 mb-1.5">
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs sm:text-sm font-mono text-slate-950 font-black">0{index + 1} // </span>
-
-                            {/* 👇 ここから配列対応のループ処理に変更 */}
                             <div className="inline-flex flex-wrap gap-1">
                               {Array.isArray(project.platform) ? (
                                 project.platform.map((plat) => (
-                                  <span 
-                                    key={plat} 
-                                    className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white"
-                                  >
+                                  <span key={plat} className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">
                                     {plat}
                                   </span>
                                 ))
                               ) : (
-                                // 💡 万が一、まだ配列になっていない過去のデータ（文字列）があってもバグらないようにする対策
                                 <span className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">
                                   {project.platform}
                                 </span>
@@ -194,26 +184,46 @@ const WorkSection = React.forwardRef(
                           </div>
                           <span className="text-[10px] sm:text-sm font-mono font-black text-slate-400">{project.year}</span>
                         </div>
+                        
                         <h3 
-                          className="text-sm sm:text-lg md:text-xl font-black text-slate-900 tracking-tight mb-1.5 line-clamp-1 leading-snug group-hover:text-amber-500 transition-colors"
-                          // 👇 `{project.title}` の代わりに、これを追加します！
+                          className="text-sm sm:text-base md:text-xl font-black text-slate-900 tracking-tight line-clamp-1 leading-snug group-hover:text-amber-500 transition-colors"
                           dangerouslySetInnerHTML={{ __html: project.title }}
                         />
                       </div>
                       
-                      <div className="flex-1 w-full relative bg-slate-100 rounded-lg sm:rounded-xl overflow-hidden border-2 border-black mb-2 min-h-[120px] sm:min-h-[180px]">
-                        <Image src={project.imageUrl} alt={project.title} fill sizes="(max-w-md) 88vw, 720px" className="object-cover group-hover:scale-102 transition-transform duration-500" unoptimized={project.imageUrl.startsWith("http")} />
+{/* ─── 🖼️ 枠の大きさを完全固定した画像エリア ─── */}
+                      <div className="w-full relative bg-slate-950 rounded-lg sm:rounded-xl overflow-hidden border-2 border-black mb-3 shrink-0 mx-auto aspect-[16/10] sm:aspect-[16/10] md:aspect-video">
+                        <Image 
+                          src={project.imageUrl} 
+                          alt={project.title} 
+                          fill 
+                          sizes="(max-w-md) 88vw, 720px" 
+                          /* 📱 MOBILEは全体が収まるように contain（左右に黒帯）、💻 WEBは隙間なく埋まるように cover */
+                          className={`group-hover:scale-[1.03] transition-transform duration-500 ${
+                            (Array.isArray(project.platform) ? project.platform : [project.platform])
+                              .map(p => String(p).toLowerCase())
+                              .some(p => p.includes("mobile") || p.includes("android"))
+                              ? "object-contain p-2" 
+                              : "object-cover"       
+                          }`} 
+                          unoptimized={project.imageUrl.startsWith("http")} 
+                        />
                       </div>
-                      <p className="shrink-0 text-slate-600 text-[11px] sm:text-sm md:text-base font-medium line-clamp-2 leading-normal sm:leading-relaxed mb-0.5 px-0.5">{project.overview}</p>
+
+                      {/* 📝 表面で見せる情報を「概要」だけに絞り、ゆったりと配置 */}
+                      <p className="text-slate-600 text-xs sm:text-sm md:text-base font-medium line-clamp-4 leading-relaxed px-0.5 overflow-hidden">
+                        {project.overview}
+                      </p>
                     </div>
 
-                    <div className="shrink-0 mt-1 flex justify-between items-center pt-2 border-t border-dashed border-slate-300">
+                    {/* カード内下部コントロール */}
+                    <div className="shrink-0 mt-2 flex justify-between items-center pt-2.5 border-t border-dashed border-slate-300">
                       <div className="flex flex-wrap gap-x-1.5 gap-y-0.5 max-w-[65%]">
                         {project.comments?.map((comment) => (
                           <span key={comment} className="text-[10px] sm:text-xs font-sans text-slate-900 font-extrabold tracking-wide">#{comment}</span>
                         ))}
                       </div>
-                      <span className="text-[10px] sm:text-sm font-black tracking-wider uppercase text-slate-950 group-hover:text-amber-500 flex items-center gap-1 font-sans group-hover:translate-x-1 transition-all">VIEW MORE <span className="text-xs sm:text-sm">→</span></span>
+                      <span className="text-[10px] sm:text-sm font-black tracking-wider uppercase text-slate-950 group-hover:text-amber-500 flex items-center gap-1 font-sans group-hover:translate-x-1 transition-all本">VIEW MORE <span className="text-xs sm:text-sm">→</span></span>
                     </div>
 
                   </section>
@@ -222,11 +232,11 @@ const WorkSection = React.forwardRef(
             </div>
           )}
 
-          {/* 右矢印ボタン (PC) ─── 💡 修正：右端に綺麗に固定 (lg:right-8) ─── */}
+          {/* 右矢印 */}
           {filteredProjects.length > 0 && (
             <button 
               onClick={localHandleNext} 
-              className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-40 bg-white border-2 border-black text-black w-12 h-12 rounded-full items-center justify-center font-black text-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all cursor-pointer" 
+              className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-40 bg-white border-2 border-black text-black w-12 h-12 rounded-full items-center justify-center font-black text-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[5px] hover:-translate-y-[52%] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[-48%] active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer" 
               aria-label="Next Project"
             >
               →
@@ -234,7 +244,7 @@ const WorkSection = React.forwardRef(
           )}
         </div>
 
-        {/* 下部コントロールバー（スマホ・タブレット専用） */}
+        {/* スマホ用インジケーター */}
         {filteredProjects.length > 0 && (
           <div className="flex items-center gap-6 mt-2 select-none shrink-0">
             <button 
