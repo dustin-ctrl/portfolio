@@ -85,23 +85,40 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           <div className="space-y-6 w-full">
             
             {/* ─── HEADER SECTION ─── */}
-            <div className="border-b-4 border-black pb-5 mt-2 sm:mt-0">
-              <div className="flex items-center justify-between gap-4 mb-2">
-                <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-xs font-black">
-                  <span className="px-2 py-0.5 bg-black text-white rounded">
-                    {Array.isArray(project.platform) ? project.platform[0] : project.platform}
-                  </span>
-                  <span className="text-slate-400">{project.year} // {project.role}</span>
-                </div>
-                <span className={`text-[9px] sm:text-[10px] font-mono font-black px-2 py-0.5 rounded border-2 border-black ${
+            {/* バツボタンを避ける pr-12 を維持 */}
+            <div className="border-b-4 border-black pb-5 mt-2 sm:mt-0 pr-12 sm:pr-0">
+              
+              {/* 要素を左から右へ1列に並べ、指定された順番で完全に統一 */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 font-mono text-[10px] sm:text-xs font-black mb-3">
+                {/* ① MOBILE などのプラットフォーム */}
+                <span className="px-2 py-0.5 bg-black text-white rounded whitespace-nowrap">
+                  {Array.isArray(project.platform) ? project.platform[0] : project.platform}
+                </span>
+
+                {/* ② OFFLINE / ONLINE バッジ */}
+                <span className={`text-[9px] sm:text-[10px] px-2 py-0.5 rounded border-2 border-black whitespace-nowrap ${
                   project.status === "ONLINE" ? "bg-emerald-400" : "bg-slate-200 text-slate-600"
                 }`}>
                   {project.status}
                 </span>
+
+                {/* ③ 2026 // 個人開発 などのテキスト */}
+                <span className="text-slate-400 whitespace-nowrap">
+                  {project.year} // {project.role}
+                </span>
               </div>
 
-              <h4 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight mb-2.5" dangerouslySetInnerHTML={{ __html: project.title }} />
-              <p className="text-xs sm:text-sm lg:text-base font-bold text-slate-700 leading-snug bg-slate-50 border-l-4 border-black p-3 rounded-r-lg">{project.overview}</p>
+              {/* 💡 スマホでも埋もれないよう、タイトルサイズをガツンと大きくチューニング */}
+              <h4 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-[-0.04em] leading-[1.1]" dangerouslySetInnerHTML={{ __html: project.title }} />
+              
+              {/* 💡 修正ポイント: TITLEの直下にSUBTITLEを追加 */}
+              {(project as any).subtitle && (
+                <p className="text-xs sm:text-sm font-mono font-bold text-slate-400 tracking-wide mt-1.5 mb-3 uppercase">
+                  { (project as any).subtitle }
+                </p>
+              )}
+
+              <p className="text-xs sm:text-sm lg:text-base font-bold text-slate-700 leading-snug bg-slate-50 border-l-4 border-black p-3 rounded-r-lg mt-3">{project.overview}</p>
 
               {/* 技術タグ & リンク */}
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mt-4">
@@ -114,7 +131,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
                 
                 {/* ─── 📱 スマホアプリ用リンクボタンエリア ─── */}
-                <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto pointer-events-auto">
+                <div className="flex flex-row flex-wrap items-center justify-center gap-2 w-full pointer-events-auto my-4">
                   
                   {/* ① 利用規約ボタン */}
                   {(project as any).termsUrl && (
@@ -124,7 +141,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       rel="noreferrer" 
                       className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-cyan-400 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer"
                     >
-                      TERMS →
+                      TERMS 
                     </a>
                   )}
 
@@ -136,7 +153,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       rel="noreferrer" 
                       className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-indigo-300 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer"
                     >
-                      PRIVACY →
+                      PRIVACY 
                     </a>
                   )}
 
@@ -148,12 +165,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       rel="noreferrer" 
                       className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-white border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-slate-900 cursor-pointer"
                     >
-                      GITHUB →
+                      GITHUB 
                     </a>
                   )}
                 </div>
               </div>
-            </div> {/* ⬅️ ここに正しい位置で閉じタグを修復しました */}
+            </div>
 
             {/* ─── 01. GALLERY SECTION ─── */}
             {displayImages.length > 0 && (
@@ -161,17 +178,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
                   // 01. GALLERY <span className="text-[9px] text-amber-500 lowercase normal-case font-bold ml-1">(click to enlarge)</span>
                 </span>
+                
+                {/* 💡 横スクロールと3列グリッドを両立する魔法のコンテナ */}
                 <div className="flex sm:grid sm:grid-cols-3 gap-4 overflow-x-auto sm:overflow-x-visible pb-3 sm:pb-0 scrollbar-none snap-x snap-mandatory">
                   {displayImages.slice(0, 3).map((imgUrl: string, idx: number) => (
                     <div 
                       key={idx} 
                       onClick={() => setActiveImageUrl(imgUrl)}
-                      className="w-[280px] sm:w-full flex-shrink-0 snap-center relative h-48 sm:h-56 lg:h-64 bg-slate-100 rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center cursor-zoom-in active:scale-[0.98] transition-transform"
+                      className="w-[280px] sm:w-full flex-shrink-0 snap-center relative aspect-video bg-slate-50 rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center cursor-zoom-in active:scale-[0.98] transition-transform"
                     >
                       <img 
                         src={imgUrl} 
                         alt="screenshot" 
-                        className="max-w-full max-h-full w-auto h-auto object-contain transition-transform duration-300 hover:scale-[1.03]" 
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-[1.03]" 
                       />
                     </div>
                   ))}
@@ -276,15 +295,41 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 // 05. SYSTEM ARCHITECTURE
               </span>
               <div className="bg-white border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-[11px] font-mono font-bold text-center mb-3">
-                  <div className="px-2 py-0.5 bg-black text-white rounded">User</div>
-                  <div className="text-slate-300 font-black rotate-90 sm:rotate-0">→</div>
-                  <div className="px-2 py-0.5 bg-white border border-slate-300 rounded">{(project.tech && project.tech[1]) || "Frontend"}</div>
-                  <div className="text-slate-300 font-black rotate-90 sm:rotate-0">→</div>
-                  <div className="px-2 py-0.5 bg-white border border-slate-300 rounded">{(project.tech && project.tech[0]) || "Backend"}</div>
-                  <div className="text-slate-300 font-black rotate-90 sm:rotate-0">→</div>
-                  <div className="px-2 py-0.5 bg-slate-200 text-slate-700 rounded">Database</div>
+                <div className="flex flex-row items-center justify-start gap-x-3 md:gap-x-4 py-6 px-4 bg-slate-50 rounded-lg border border-slate-200 text-[11px] font-mono font-bold text-center mb-3 w-full overflow-x-auto overflow-y-hidden select-none custom-scrollbar whitespace-nowrap">
+                  {project.architectureFlow && project.architectureFlow.map((step, index) => {
+                    const nextStep = project.architectureFlow[index + 1];
+                    const isNextApi = nextStep && (nextStep.label.toLowerCase().includes('api') || nextStep.label.toLowerCase().includes('storekit'));
+
+                    return (
+                      <React.Fragment key={index}>
+                        <div className={`flex flex-col justify-center items-center flex-shrink-0 transition-all duration-200 ${
+                          step.type === 'user' 
+                            ? 'w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-slate-800 text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] aspect-square p-2' :
+                          step.type === 'platform' 
+                            ? 'px-3 py-1.5 rounded-full bg-slate-200 border border-dashed border-slate-400 text-slate-600 font-medium' :
+                          step.type === 'app' 
+                            ? 'relative px-3 py-3 rounded-xl bg-amber-50 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-black ring-2 md:ring-4 ring-amber-400/30 font-black' :
+                          step.type === 'external' || step.type === ('core' as any)
+                            ? 'px-3 py-2 rounded-md bg-blue-600 border border-blue-700 text-white tracking-wide shadow-sm' :
+                          'px-2 py-1 bg-white border border-slate-300 text-slate-700'
+                        }`}>
+                          <span className="leading-tight text-[10px] sm:text-[9px] md:text-[10px] lg:text-[11px] whitespace-nowrap px-0.5">
+                            {step.label}
+                          </span>
+                        </div>
+
+                        {index < project.architectureFlow.length - 1 && (
+                          <div className="font-black text-[9px] md:text-[10px] text-slate-400 px-1 flex items-center justify-center flex-shrink-0 whitespace-nowrap">
+                            {step.type === 'app' && isNextApi 
+                              ? <span className="text-[8px] md:text-[10px]">◀ REST API ▶</span> 
+                              : '➔'}
+                          </div>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
+
                 <p className="font-medium text-[10px] lg:text-[11px] text-slate-500 text-justify leading-relaxed">
                   {project.architecture}
                 </p>

@@ -1,5 +1,11 @@
-// app/types/portfolio.ts
-
+export interface ArchitectureStep {
+  label: string;
+  // user: 丸型 (人間)
+  // platform: 大きな背景（ServiceNowなどの基盤）
+  // app: プラットフォームの中で自分が作ったコアロジック
+  // external: 外部APIなどの連携先
+  type: "user" | "platform" | "app" | "external"; 
+}
 // app/types/portfolio.ts
 export interface AppProject {
   id: string;
@@ -8,6 +14,7 @@ export interface AppProject {
   linkUrl?: string; // ONLINEの場合の、実際に触れるURL
   githubUrl?: string; 
   title: string;
+  subtitle:string;
   year: string;
   role: string;
   tech: string[]; // 詳細モーダルの中でのみ使用
@@ -15,6 +22,7 @@ export interface AppProject {
   overview: string;
   problem: string;
   architecture: string;
+  architectureFlow?: ArchitectureStep[];
   highlight: string;
   imageUrl: string; // 表紙用のメイン画像
   galleryImages: string[]; // モーダル内のスライダー等で使用する画像配列（1枚の場合も同じパスを複数入れる運用）

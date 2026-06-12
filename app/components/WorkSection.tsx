@@ -111,8 +111,7 @@ const WorkSection = React.forwardRef(
           </div>
         </div>
 
-        {/* カルーセル本体 */}
-        <div className="w-full relative flex items-center justify-center min-h-[440px] sm:min-h-[500px] md:min-h-[580px] px-2 sm:px-4 md:px-24 lg:px-28">
+        <div className="w-full relative flex items-center justify-center min-h-[480px] sm:min-h-[540px] md:min-h-[620px] px-2 sm:px-4 md:px-24 lg:px-28">
           
           {/* 左矢印 */}
           {filteredProjects.length > 0 && (
@@ -130,8 +129,7 @@ const WorkSection = React.forwardRef(
               NO PROJECTS FOUND IN THIS CATEGORY.
             </div>
           ) : (
-            /* 💡 カード全体の高さを固定(h-full)にして、伸縮を子要素に任せるコンテナ設定 */
-            <div className="relative w-full max-w-[340px] xs:w-[92vw] sm:max-w-[540px] md:max-w-[720px] h-[440px] sm:h-[480px] md:h-[540px]">
+            <div className="relative w-full max-w-[340px] xs:w-[92vw] sm:max-w-[540px] md:max-w-[720px] flex items-center justify-center min-h-[460px] sm:min-h-[500px] md:min-h-[560px]">
               {filteredProjects.map((project, index) => {
                 let offset = index - currentIndex;
                 const total = filteredProjects.length;
@@ -146,13 +144,22 @@ const WorkSection = React.forwardRef(
                 else if (isLeft) transformClass = "opacity-25 z-10 scale-85 -translate-x-[68%] sm:-translate-x-[58%] md:-translate-x-[48%] pointer-events-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
                 else if (isRight) transformClass = "opacity-25 z-10 scale-85 translate-x-[68%] sm:translate-x-[58%] md:translate-x-[48%] pointer-events-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]";
                 
+                // モバイル判定の定義
+                const isMobile = (Array.isArray(project.platform) ? project.platform : [project.platform])
+                  .map(p => String(p).toLowerCase())
+                  .some(p => p.includes("mobile") || p.includes("android"));
+
                 return (
                   <section 
                     key={project.id} 
                     onClick={() => isCenter && onSelectProject(project)} 
                     onTouchStart={isCenter ? handleTouchStart : undefined}
                     onTouchEnd={isCenter ? handleTouchEnd : undefined}
-                    className={`absolute inset-0 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group ${transformClass} touch-pan-y`}
+                    className={`absolute inset-x-0 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group ${transformClass} touch-pan-y h-auto
+                      ${isMobile 
+                        ? "min-h-[420px] sm:min-h-[460px] md:min-h-[510px]" // 📱 MOBILE（16:9画像＋5行文にジャストフィットする高さ）
+                        : "min-h-[440px] sm:min-h-[490px] md:min-h-[540px]" // 💻 WEB（16:9画像＋3行文にジャストフィットする高さ）
+                      }`}
                   >
                     
                     {/* カード内上部 */}
@@ -160,13 +167,13 @@ const WorkSection = React.forwardRef(
                       
                       {/* メタ情報 */}
                       <div className="shrink-0 mb-2">
-                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <div className="flex items-center justify-between gap-2 mb-1">
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs sm:text-sm font-mono text-slate-950 font-black">0{index + 1} // </span>
                             <div className="inline-flex flex-wrap gap-1">
                               {Array.isArray(project.platform) ? (
                                 project.platform.map((plat) => (
-                                  <span key={plat} className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">
+                                  <span key={plat} className="px-2 py-0.5 text-[9px] sm:text-[1xs] font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">
                                     {plat}
                                   </span>
                                 ))
@@ -186,32 +193,37 @@ const WorkSection = React.forwardRef(
                         </div>
                         
                         <h3 
-                          className="text-sm sm:text-base md:text-xl font-black text-slate-900 tracking-tight line-clamp-1 leading-snug group-hover:text-amber-500 transition-colors"
+                          className="font-mono font-sans text-xl sm:text-2xl md:text-4xl font-black text-slate-900 tracking-[-0.05em] line-clamp-1 leading-none group-hover:text-amber-500 transition-colors mb-0"
                           dangerouslySetInnerHTML={{ __html: project.title }}
-                        />
+                        />    
+
+                        {/* TITLEの直下にSUBTITLEを表示 */}
+                        {(project as any).subtitle && (
+                          <p className="text-[10px] sm:text-xs font-mono font-bold text-slate-400 tracking-wide mt-1 line-clamp-1 uppercase">
+                            { (project as any).subtitle }
+                          </p>
+                        )}
                       </div>
                       
-{/* ─── 🖼️ 枠の大きさを完全固定した画像エリア ─── */}
-                      <div className="w-full relative bg-slate-950 rounded-lg sm:rounded-xl overflow-hidden border-2 border-black mb-3 shrink-0 mx-auto aspect-[16/10] sm:aspect-[16/10] md:aspect-video">
+                      {/* 🖼️ 【WEBもMOBILEも16:9完全固定】画像エリア */}
+                      {/* 💡 修正ポイント：w-full aspect-video で比率を完全統一。背景を白(bg-white)にして、画像が収まる際の黒帯を徹底排除 */}
+                      <div className="w-full aspect-video relative bg-white rounded-lg sm:rounded-xl overflow-hidden border-2 border-black mb-2.5 shrink-0 mx-auto">
                         <Image 
                           src={project.imageUrl} 
                           alt={project.title} 
                           fill 
                           sizes="(max-w-md) 88vw, 720px" 
-                          /* 📱 MOBILEは全体が収まるように contain（左右に黒帯）、💻 WEBは隙間なく埋まるように cover */
-                          className={`group-hover:scale-[1.03] transition-transform duration-500 ${
-                            (Array.isArray(project.platform) ? project.platform : [project.platform])
-                              .map(p => String(p).toLowerCase())
-                              .some(p => p.includes("mobile") || p.includes("android"))
-                              ? "object-contain p-2" 
-                              : "object-cover"       
-                          }`} 
+                          className={`group-hover:scale-[1.03] transition-transform duration-500
+                            ${isMobile ? "object-contain p-1.5" : "object-cover object-center"}`} 
                           unoptimized={project.imageUrl.startsWith("http")} 
                         />
                       </div>
 
-                      {/* 📝 表面で見せる情報を「概要」だけに絞り、ゆったりと配置 */}
-                      <p className="text-slate-600 text-xs sm:text-sm md:text-base font-medium line-clamp-4 leading-relaxed px-0.5 overflow-hidden">
+                      {/* 📝 表面の「概要」 */}
+                      {/* 💡 変更ポイント：MOBILEの時だけ5行（line-clamp-5）に拡張し、16:9画像の下に生まれるスペースを文字で美しく埋めます */}
+                      <p className={`text-slate-600 text-xs sm:text-sm md:text-base font-medium leading-relaxed px-0.5 overflow-hidden transition-all duration-300
+                        ${isMobile ? "line-clamp-5" : "line-clamp-3"}`}
+                      >
                         {project.overview}
                       </p>
                     </div>
@@ -223,7 +235,7 @@ const WorkSection = React.forwardRef(
                           <span key={comment} className="text-[10px] sm:text-xs font-sans text-slate-900 font-extrabold tracking-wide">#{comment}</span>
                         ))}
                       </div>
-                      <span className="text-[10px] sm:text-sm font-black tracking-wider uppercase text-slate-950 group-hover:text-amber-500 flex items-center gap-1 font-sans group-hover:translate-x-1 transition-all本">VIEW MORE <span className="text-xs sm:text-sm">→</span></span>
+                      <span className="text-[10px] sm:text-sm font-black tracking-wider uppercase text-slate-950 group-hover:text-amber-500 flex items-center gap-1 font-sans group-hover:translate-x-1 transition-all">VIEW MORE <span className="text-xs sm:text-sm">→</span></span>
                     </div>
 
                   </section>
