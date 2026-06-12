@@ -176,7 +176,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {displayImages.length > 0 && (
               <div className="space-y-2">
                 <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
-                  // 01. GALLERY <span className="text-[9px] text-amber-500 lowercase normal-case font-bold ml-1">(click to enlarge)</span>
+                  01. GALLERY <span className="text-[9px] text-amber-500 lowercase normal-case font-bold ml-1">(click to enlarge)</span>
                 </span>
                 
                 {/* 💡 横スクロールと3列グリッドを両立する魔法のコンテナ */}
@@ -201,46 +201,78 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* ─── 02. METRICS & ROLES SECTION ─── */}
             <div className="space-y-2">
               <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
-                // 02. METRICS & ROLES
+                02. METRICS & ROLES
               </span>
+              
               <div className="bg-slate-50 border-2 border-black rounded-xl p-4 lg:p-5 grid grid-cols-1 md:grid-cols-5 gap-4 lg:gap-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <div className="md:col-span-2 grid grid-cols-3 gap-2 text-center">
-                  <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-center">
-                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase">DURATION</span>
-                    <span className="text-xs lg:text-sm font-black text-black">{(project as any).duration || "3日間"}</span>
-                  </div>
-                  <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-center">
-                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase">TEAM</span>
-                    <span className="text-xs lg:text-sm font-black text-black">{(project as any).teamSize || "4名"}</span>
-                  </div>
-                  <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-center">
-                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase">AWARD</span>
-                    <span className="text-[10px] lg:text-[11px] font-black text-emerald-600 leading-tight">{(project as any).achievement || "全国出場"}</span>
-                  </div>
-                </div>
-                <div className="md:col-span-3 flex items-center justify-between border-t-2 md:border-t-0 md:border-l border-dashed border-slate-300 pt-3 md:pt-0 md:pl-4 lg:pl-6">
-                  <div>
-                    <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase mb-1">// MY ROLES</span>
-                    <div className="flex flex-wrap gap-1">
-                      {((project as any).myRoles || [project.role]).map((r: string) => (
-                        <span key={r} className="bg-white border border-black text-[9px] lg:text-[10px] font-bold px-1.5 py-0.5 rounded">
-                          {r}
-                        </span>
-                      ))}
+                
+                {/* 📊 左側ブロック：METRICS（全体の2/5幅） */}
+                <div className="md:col-span-2 flex flex-col justify-start">
+                  {/* 💡 メトリクス全体のタイトルラベル */}
+                  <span className="block text-[10px] sm:text-xs font-mono font-black text-slate-400 uppercase tracking-wider mb-2">
+                    METRICS
+                  </span>
+                  
+                  {/* 3つのボックスコンテナ */}
+                  <div className="grid grid-cols-3 gap-2 text-center flex-1">
+                    {/* ① DURATION */}
+                    <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-between min-h-[58px] sm:min-h-[62px]">
+                      <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase leading-none mb-1">DURATION</span>
+                      <span className="text-xs lg:text-sm font-black text-black mt-auto flex items-center justify-center flex-1">
+                        {(project as any).duration || "3日間"}
+                      </span>
+                    </div>
+
+                    {/* ② TEAM */}
+                    <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-between min-h-[58px] sm:min-h-[62px]">
+                      <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase leading-none mb-1">TEAM</span>
+                      <span className="text-xs lg:text-sm font-black text-black mt-auto flex items-center justify-center flex-1">
+                        {(project as any).teamSize || "4名"}
+                      </span>
+                    </div>
+
+                    {/* ③ AWARD */}
+                    <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-between min-h-[58px] sm:min-h-[62px]">
+                      <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase leading-none mb-1">AWARD</span>
+                      <span className="text-[10px] sm:text-xs lg:text-sm font-black text-emerald-600 leading-tight mt-auto flex items-center justify-center flex-1">
+                        {(project as any).achievement || "全国出場"}
+                      </span>
                     </div>
                   </div>
-                  <div className="text-right flex-shrink-0 ml-2">
-                    <span className="block text-[8px] lg:text-[9px] font-mono font-black text-slate-400">CONTRIBUTION</span>
-                    <span className="text-xl lg:text-2xl font-mono font-black text-blue-600">{(project as any).contributionRatio || "70%"}</span>
+                </div>
+
+                {/* 🛠️ 右側ブロック：MY ROLES（全体の3/5幅） */}
+                <div className="md:col-span-3 flex flex-col justify-start border-t-2 md:border-t-0 md:border-l border-dashed border-slate-300 pt-3 md:pt-0 md:pl-4 lg:pl-6">
+                  {/* 💡 ロール全体のタイトルラベル */}
+                  <span className="block text-[10px] sm:text-xs font-mono font-black text-slate-400 uppercase tracking-wider mb-2">
+                    MY ROLES & CONTRIBUTION
+                  </span>
+
+                  {/* ロール詳細コンテナ */}
+                  <div className="bg-white border border-slate-300 p-3 rounded-lg flex items-center justify-between min-h-[58px] sm:min-h-[62px] flex-1">
+                    <div>
+                      <div className="flex flex-wrap gap-1">
+                        {((project as any).myRoles || [project.role]).map((r: string) => (
+                          <span key={r} className="bg-slate-50 border border-slate-300 text-[9px] lg:text-[10px] font-bold px-1.5 py-0.5 rounded">
+                            {r}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-right flex-shrink-0 ml-2">
+                      <span className="block text-[8px] lg:text-[9px] font-mono font-black text-slate-400">RATIO</span>
+                      <span className="text-xl lg:text-2xl font-mono font-black text-blue-600">{(project as any).contributionRatio || "70%"}</span>
+                    </div>
                   </div>
                 </div>
+
               </div>
             </div>
 
             {/* ─── 03. PROJECT OVERVIEW SECTION ─── */}
             <div className="space-y-2">
               <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
-                // 03. PROJECT OVERVIEW
+                03. PROJECT OVERVIEW
               </span>
               <div className="bg-grid-paper border-2 border-black rounded-xl p-5 md:p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
@@ -266,7 +298,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* ─── 04. ENGINEERING HIGHLIGHT SECTION ─── */}
             <div className="space-y-2">
               <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
-                // 04. ENGINEERING HIGHLIGHT
+                04. ENGINEERING HIGHLIGHT
               </span>
               <div className="bg-slate-900 text-white rounded-xl p-4 lg:p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black">
                 <p className="text-xs sm:text-sm text-slate-200 leading-relaxed text-justify mb-4">
@@ -292,7 +324,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* ─── 05. SYSTEM ARCHITECTURE SECTION ─── */}
             <div className="space-y-2">
               <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
-                // 05. SYSTEM ARCHITECTURE
+                05. SYSTEM ARCHITECTURE
               </span>
               <div className="bg-white border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <div className="flex flex-row items-center justify-start gap-x-3 md:gap-x-4 py-6 px-4 bg-slate-50 rounded-lg border border-slate-200 text-[11px] font-mono font-bold text-center mb-3 w-full overflow-x-auto overflow-y-hidden select-none custom-scrollbar whitespace-nowrap">
