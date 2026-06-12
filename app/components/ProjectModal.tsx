@@ -328,12 +328,15 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               </span>
               <div className="bg-white border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <div className="flex flex-row items-center justify-start gap-x-3 md:gap-x-4 py-6 px-4 bg-slate-50 rounded-lg border border-slate-200 text-[11px] font-mono font-bold text-center mb-3 w-full overflow-x-auto overflow-y-hidden select-none custom-scrollbar whitespace-nowrap">
-                  {project.architectureFlow && project.architectureFlow.map((step, index) => {
-                    const nextStep = project.architectureFlow[index + 1];
-                    const isNextApi = nextStep && (nextStep.label.toLowerCase().includes('api') || nextStep.label.toLowerCase().includes('storekit'));
+                 {project.architectureFlow && project.architectureFlow.map((step, index) => {
+                  // 1. 一旦安全に配列自体を変数に代入する
+                  const flow = project.architectureFlow;
+                  // 2. 配列が存在する場合のみ次の要素を取得（存在しない場合は undefined）
+                  const nextStep = flow ? flow[index + 1] : undefined;
+                  const isNextApi = nextStep && (nextStep.label.toLowerCase().includes('api') || nextStep.label.toLowerCase().includes('storekit'));
 
-                    return (
-                      <React.Fragment key={index}>
+                  return (
+                    <React.Fragment key={index}>
                         <div className={`flex flex-col justify-center items-center flex-shrink-0 transition-all duration-200 ${
                           step.type === 'user' 
                             ? 'w-16 h-16 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-slate-800 text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] aspect-square p-2' :
@@ -350,9 +353,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                           </span>
                         </div>
 
-                        {index < project.architectureFlow.length - 1 && (
-                          <div className="font-black text-[9px] md:text-[10px] text-slate-400 px-1 flex items-center justify-center flex-shrink-0 whitespace-nowrap">
-                            {step.type === 'app' && isNextApi 
+                      {flow && index < flow.length - 1 && (
+                        <div className="font-black text-[9px] md:text-[10px] text-slate-400 px-1 flex items-center justify-center flex-shrink-0 whitespace-nowrap">
+                          {step.type === 'app' && isNextApi
                               ? <span className="text-[8px] md:text-[10px]">◀ REST API ▶</span> 
                               : '➔'}
                           </div>
