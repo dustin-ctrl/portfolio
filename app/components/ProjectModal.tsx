@@ -131,7 +131,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
                 
                 {/* ─── 📱 スマホアプリ用リンクボタンエリア ─── */}
-                <div className="flex flex-row flex-wrap items-center justify-center gap-2 w-full pointer-events-auto my-4">
+                <div className="flex flex-row flex-wrap items-center gap-2 w-full pointer-events-auto my-4">
                   
                   {/* ① 利用規約ボタン */}
                   {(project as any).termsUrl && (

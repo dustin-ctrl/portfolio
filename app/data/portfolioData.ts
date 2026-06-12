@@ -33,7 +33,7 @@ export const PROJECTS_DATA: AppProject[] = [
   //     "/images/clipfit2.png",
   //     "/images/clipfit2.png",
   //   ],
-  //   duration: "個人開発",
+  //   duration: "1週間",
   //   teamSize: "1名 (個人)",
   //   achievement: "iOSアプリ",
   //   myRoles: ["企画", "UI・UXデザイン", "iOSアプリ実装"],
