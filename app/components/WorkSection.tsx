@@ -166,19 +166,23 @@ const WorkSection = React.forwardRef(
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs sm:text-sm font-mono text-slate-950 font-black">0{index + 1} // </span>
-                            <div className="inline-flex flex-wrap gap-1">
-                              {Array.isArray(project.platform) ? (
-                                project.platform.map((plat) => (
-                                  <span key={plat} className="px-2 py-0.5 text-[9px] sm:text-[1xs] font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">
-                                    {plat}
-                                  </span>
-                                ))
-                              ) : (
-                                <span className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white">
-                                  {project.platform}
-                                </span>
-                              )}
-                            </div>
+                            <div className="inline-flex gap-1 min-w-0 overflow-hidden">
+                                  {Array.isArray(project.platform) ? (
+                                    project.platform.map((plat, platIdx) => (
+                                      <span 
+                                        key={plat}
+                                        className={`px-2 py-0.5 text-[9px] sm:text-[10px] font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white whitespace-nowrap shrink-0
+                                          ${platIdx > 0 ? "hidden sm:inline-block" : "inline-block"}`}
+                                      >
+                                        {plat}
+                                      </span>
+                                    ))
+                                  ) : (
+                                    <span className="px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-widest uppercase rounded border-2 border-black bg-black text-white whitespace-nowrap shrink-0">
+                                      {project.platform}
+                                    </span>
+                                  )}
+                                </div>
                             {project.status === "ONLINE" ? (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-wider rounded border-2 border-black bg-emerald-50 text-emerald-700"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />ONLINE</span>
                             ) : (
