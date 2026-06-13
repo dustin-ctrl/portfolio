@@ -158,39 +158,41 @@ export const PROJECTS_DATA: AppProject[] = [
     myRoles: ["チームリーダー", "デポジットシステム構築", "ロジック設計"],
     contributionRatio: "60%"
   },
-  // {
-  //   id: "subsc-manager",
-  //   platform: ["Mobile"],
-  //   status: "OFFLINE",
-  //   githubUrl: "https://github.com/jphacks/hs_2407",
-  //   title: "SubVision",
-  //   subtitle: "無駄なサブスクを管理するアプリ",
-  //   year: "2024",
-  //   role: "ハッカソン",
-  //   tech: ["Kotlin", "Android Studio"],
-  //   comments: ["初ハッカソン", "地方大会優勝","JPHACKS2024"],
-  //   overview: "初めて出場したハッカソンで、現代の不透明な固定費（サブスク代）を可視化・最適化するために実装したネイティブアプリケーションです。",
-  //   problem: "課題感の鋭さと目の付け所が圧倒的に評価され、初出場にして「ハッカソン広島大会優勝」という快挙を達成。一方で時間内の実装が完全ではなく、全国大会への切符を逃すという、エンジニア人生で最も強烈な「悔しさ」を味わった原点のアプリです。",
-  //   features: "・現代の不透明な固定費を瞬時に見つめ直す『サブスク代の自動可視化機能』\n・無駄な固定費を削減するための『最適化シミュレーションエンジン』\n ruinネイティブアプリの特性を活かした『高速かつ堅牢なデータ処理』\n・次回決済日をユーザーに通知する『自動アラート・リマインダーシステム』",
-  //   highlight: "アイデアを形にする『実装力』の重要性を骨身に染みて理解した、自身のエンジニアリングのターニングポイントです。この時の悔しさが、その後のモダンWebやServiceNowのスキルを爆発的に引き上げるトリガーとなりました。",
-  //   highlightProblem: "限られた時間内でのアイデアの完全具現化不足",
-  //   highlightApproach: "Android Studioを用いたKotlinネイティブ実装",
-  //   highlightBenefit: "初ハッカソンにして『地方大会優勝』",
-  //   architecture: "Androidネイティブならではの高速な動作と強固な安全性を最優先し、言語にはKotlinを全面採用。無駄のないスリムなコンポーネント構造で、ローカルファーストな軽量設計を意識しています。",
-  //   architectureFlow: [
-  //     { label: "User", type: "user" },
-  //     { label: "Android OS", type: "platform" },
-  //     { label: "SubVision (Kotlin / Jetpack Compose)", type: "app" }, // ➔ 1つに統合！
-  //     { label: "Local Storage", type: "external" }
-  //   ],
-  //   imageUrl: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=1000&auto=format&fit=crop",
-  //   galleryImages: [
-  //     "/images/subvision1.png",          
-  //   ],
-  //   duration: "数日間",
-  //   teamSize: "複数名",
-  //   achievement: "広島大会優勝",
-  //   myRoles: ["アイデア企画", "Android実装"],
-  //   contributionRatio: "40%"
-  // }
+  {
+    id: "subsc-manager",
+    platform: ["Mobile"],
+    status: "OFFLINE",
+    githubUrl: "https://github.com/jphacks/hs_2407",
+    title: "SubVision",
+    subtitle: "無駄なサブスクを管理するアプリ",
+    year: "2024",
+    role: "ハッカソン",
+    tech: ["Kotlin", "Android Studio"],
+    comments: ["初ハッカソン", "地方大会優勝","JPHACKS2024"],
+    overview: "ついついサブスクだと財布の紐がゆるくなってしまう事がありませんか？そんな現代の不透明なサブスク代を可視化・最適化するために実装したネイティブアプリケーションです。",
+    problem: "「サブスクの月額費用に対して得をしているか分からない」という不満に着目し、全ユーザーの平均利用時間との比較から「自身の損得度」を可視化してフィードバックする機能を実装しました。",
+    features: "・現代の不透明な固定費を瞬時に見つめ直す『サブスク代の自動可視化機能』\n・平均利用時間との比較で費用対効果を暴く『損得フィードバックエンジン』\n・ネイティブアプリの特性を活かした『高速かつ堅牢なデータ処理』",
+    highlight: "各サブスクサービスの公式APIが存在しない中、OSのデバイス利用ログを代替データとして活用するロジックを実装。当初は全ユーザーの平均利用時間を集計するためサーバースクリプトの実装に挑戦したものの、データ同期と通信処理の課題から断念し、端末ローカル内での解析・シミュレーション機能として具現化しました。マルチデバイス環境におけるデータ網羅性など、今後の拡張性に課題を残しつつも、限られた制約下での実用的な代替アプローチを確立しています。",
+    highlightProblem: "公式API不在による利用時間取得の困難、および全体平均集計のためのサーバー実装の壁",
+    highlightApproach: "OS利用ログの代替解析、およびサーバー連携断念に伴うローカル完結型ロジックへの切り替え",
+    highlightBenefit: "技術的制約の中でデータ活用とモックアップを成立させ『地方大会優勝』",
+    architecture: "Android StudioおよびKotlinを採用したAndroidネイティブアプリケーション。当初は全体平均集計のためサーバー同期を検討・検証したものの、ハッカソンの限られた開発期間と通信処理の確実性を考慮し、端末内で完結するローカルファーストな解析・シミュレーション構成へと仕様を最適化しました。",
+    architectureFlow: [
+    { label: "User", type: "user" },
+    { label: "Android OS (デバイス利用ログ保持)", type: "platform" },
+    { label: "SubVision (Kotlin / XML Layout)", type: "app" }, // ➔ 期間内の確実性を重視したローカル解析
+    { label: "Local Storage (データ解析・保存)", type: "external" }
+    ],
+    imageUrl: "/images/subvision-1.jpg",
+    galleryImages: [    
+      "/images/subvision-3.jpg",
+      "/images/subvision-2.jpg",
+      "/images/subvision-1.jpg",  
+    ],
+    duration: "2日",
+    teamSize: "3名",
+    achievement: "地方大会優勝",
+    myRoles: ["アイデア企画", "フロントエンド"],
+    contributionRatio: "40%"
+  }
 ];
