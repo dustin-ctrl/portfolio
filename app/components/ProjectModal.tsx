@@ -121,7 +121,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <p className="text-xs sm:text-sm lg:text-base font-bold text-slate-700 leading-snug bg-slate-50 border-l-4 border-black p-3 rounded-r-lg mt-3">{project.overview}</p>
 
               {/* 技術タグ & リンク */}
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mt-4">
+              {/* 💡 修正ポイント: 全体を囲んでいた無駄な div を整理し、ボタンがある時だけ適切な余白を作るように変更 */}
+              <div className="mt-4">
                 <div className="flex flex-wrap gap-1">
                   {project.tech.map((techName) => (
                     <span key={techName} className="bg-slate-100 text-slate-800 text-[9px] sm:text-[10px] font-mono font-black px-2 py-0.5 rounded border border-slate-300">
@@ -131,44 +132,58 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </div>
                 
                 {/* ─── 📱 スマホアプリ用リンクボタンエリア ─── */}
-                <div className="flex flex-row flex-wrap items-center gap-2 w-full pointer-events-auto my-4">
-                  
-                  {/* ① 利用規約ボタン */}
-                  {(project as any).termsUrl && (
-                    <a 
-                      href={(project as any).termsUrl} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-cyan-400 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer"
-                    >
-                      TERMS 
-                    </a>
-                  )}
+                {/* 💡 修正ポイント: ボタンが1つでも存在する場合のみ、上部に余白（mt-4）を持ったコンテナを表示する */}
+                {((project as any).termsUrl || (project as any).privacyUrl || (project.githubUrl && project.githubUrl.trim().length > 0)) && (
+                  <div className="inline-flex flex-wrap items-center gap-2.5 pointer-events-auto mt-4">
+                    
+                    {/* ① 利用規約ボタン */}
+                    {(project as any).termsUrl && (
+                      <a 
+                        href={(project as any).termsUrl} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-center px-4 py-1.5 bg-cyan-400 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer whitespace-nowrap"
+                      >
+                        TERMS 
+                      </a>
+                    )}
 
-                  {/* ② プライバシーポリシーボタン */}
-                  {(project as any).privacyUrl && (
-                    <a 
-                      href={(project as any).privacyUrl} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-indigo-300 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer"
-                    >
-                      PRIVACY 
-                    </a>
-                  )}
+                    {/* ② プライバシーポリシーボタン */}
+                    {(project as any).privacyUrl && (
+                      <a 
+                        href={(project as any).privacyUrl} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-center px-4 py-1.5 bg-indigo-300 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer whitespace-nowrap"
+                      >
+                        PRIVACY 
+                      </a>
+                    )}
 
-                  {/* ③ GitHubボタン */}
-                  {project.githubUrl && (
-                    <a 
-                      href={project.githubUrl} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="flex-1 sm:flex-none text-center px-3 py-1.5 bg-white border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-slate-900 cursor-pointer"
-                    >
-                      GITHUB 
-                    </a>
-                  )}
-                </div>
+                    {/* ③ GitHubボタン */}
+                    {project.githubUrl && project.githubUrl.trim().length > 0 && (
+                      <a 
+                        href={project.githubUrl} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-center px-4 py-1.5 bg-white border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-slate-900 cursor-pointer whitespace-nowrap"
+                      >
+                        GITHUB 
+                      </a>
+                    )}
+                    {/* ④ 💡 新設: LIVE SITE ボタン（ONLINEプロジェクト用） */}
+                    {(project as any).linkUrl && (project as any).linkUrl.trim().length > 0 && (
+                      <a 
+                        href={(project as any).linkUrl} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-center px-4 py-1.5 bg-lime-400 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer whitespace-nowrap"
+                      >
+                        LIVE SITE ↗
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 

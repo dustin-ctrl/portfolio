@@ -44,7 +44,6 @@ export const PROJECTS_DATA: AppProject[] = [
     id: "disaster-nav",
     platform: ["Web"],
     status: "OFFLINE",
-    linkUrl: "https://hinavi.example.com",
     githubUrl: "https://github.com/jphacks/hs_2503",
     demoUrl: "https://drive.google.com/file/d/1tCF61xSyztlCRNxtlMuggq-MODYDm20a/view",
     title: 'hinavi',
@@ -194,5 +193,41 @@ export const PROJECTS_DATA: AppProject[] = [
     achievement: "地方大会優勝",
     myRoles: ["アイデア企画", "フロントエンド"],
     contributionRatio: "40%"
+  }
+  ,{
+    id: "mt-fuji-system",
+    platform: ["Web"],
+    status: "OFFLINE",
+    githubUrl: "",
+    title: "富士山登山予約システム",
+    subtitle: "オーバーツーリズムと弾丸登山に挑む",
+    year: "2023",
+    role: "インターンシップ",
+    tech: ["ServiceNow"],
+    comments: ["初アプリ開発", "インターンシップ成果物", "社会課題解決"],
+    overview: "富士山のオーバーツーリズム（観光公害）および無謀な弾丸登山の危険性を解消するため、ServiceNowを用いて構築した登山管理システムです。予約から誓約書の提出、装備レンタルまでを一元化しました。",
+    problem: "富士山における登山者の急増と、軽装備で夜通し登る「弾丸登山」による遭難リスクの深刻化に着目しました。これらを抑制し、安全な登山環境を確保するための管理体制が不足しているという課題を解決します。",
+    features: "・登山者情報を一元管理する『オンライン予約・管理システム』\n・遭難リスクを低減するための『装備レンタル・誓約書提出フロー』\n・ServiceNowのワークフローを活かした『手続きの自動化・効率化』",
+    highlight: "当時の社会課題であった「弾丸登山」とオーバーツーリズムに対し、ServiceNowを活用して予約から装備確認までを必須化する解決策を提案。実社会の課題に対し、システム開発を通じて具体的な防護策を形にしました。このアイデアは、翌年に実際の行政施策として導入された富士山の規制強化と合致しており、社会実装の視点を持った開発経験となりました。",
+    highlightProblem: "富士山の登山者増加による環境破壊と遭難リスク（弾丸登山）の放置",
+    highlightApproach: "ServiceNowを用いた登山手続き（予約・誓約書・レンタル）の必須化フロー構築",
+    highlightBenefit: "提案した対策が翌年の行政施策と合致し『社会課題への先見性が評価』",
+    architecture: "ServiceNowのローコードプラットフォームを採用したWebアプリケーション。登山手続きをデジタルワークフロー化し、予約・誓約・レンタルといった一連のプロセスを管理画面で完結させるアーキテクチャを採用しています。",
+    architectureFlow: [
+      { label: "User", type: "user" },
+      { label: "ServiceNow", type: "platform" },
+      { label: "This System (Business Rule / flow designer)", type: "app" }
+    ],
+    imageUrl: "/images/fuji-1.jpg",
+    galleryImages: [    
+      "/images/fuji-2.jpg",
+      "/images/fuji-3.jpg",
+      "/images/fuji-4.jpg",  
+    ],
+    duration: "2週間",
+    teamSize: "2名",
+    achievement: "インターンシップ成果物",
+    myRoles: ["システム設計", "ServiceNow実装"],
+    contributionRatio: "50%"
   }
 ];
