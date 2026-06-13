@@ -136,7 +136,7 @@ export const PROJECTS_DATA: AppProject[] = [
     highlight: "インバウンドの課題に対し『ITを手段としたデポジット文化の普及』という構造的な解決策を自ら発案。初対面のプロを率いるリーダーとして進行管理を徹底しつつ、REST APIを用いたStripe・ServiceNow間の堅牢なシステムアーキテクチャ設計・高度な実装を自ら主導し、現場で即時実運用が可能なレベルで完遂しました。",
     highlightProblem: "ServiceNowを主戦場とするプロの社会人を相手に、バックグラウンドが異なる初対面チームを1つのゴールへ導く「チームマネジメント」",
     highlightApproach: "超短期開発におけるボトルネックを排除するためアジャイルに進捗を管理しつつ、Stripe連携における決済エラーや例外処理を想定した『疎結合なREST API・エラーハンドリング設計』を主導",
-    highlightBenefit: "徹底した進行管理による開発リソースの最大化と、例外処理まで作り込まれた圧倒的な実装クオリティが評価され、全体9位および『公式ブログ賞』を受賞",
+    highlightBenefit: "徹底した進行管理による開発リソースの最大化と、例外処理まで作り込まれた圧倒的な実装クオリティが評価され、審査員特別賞を受賞",
     architecture: "ServiceNowとStripeをREST APIでダイレクトに統合した決済自動化アーキテクチャ。コアであるServiceNowの『IntegrationHub』をハブとしてStripe APIと双方向通信を行い、宿泊予約に連動したデポジットの自動与信（仮売上確保）から、マナーチェック後の『Flow Designer』による返金処理までのライフサイクルを、手動介入なしで完全自動化しました。",
 // 💡 4. now Receptionの構成図（ServiceNow・Stripe・GPTの高度なマルチAPI連携を正確に表現）
     architectureFlow: [
@@ -146,11 +146,11 @@ export const PROJECTS_DATA: AppProject[] = [
       { label: "now Reception (IntegrationHub / Backend)", type: "app" },
       { label: "Stripe & OpenAI GPT API", type: "external" } // ➔ 連携している外部APIの存在を明記！
     ],
-    imageUrl: "/images/nowreception1.png",
+    imageUrl: "/images/nowreception-1.jpg",
     galleryImages: [    
-      "/images/nowreception2.png",
-      "/images/nowreception3.png",
-      "/images/nowreception4.png",  
+      "/images/nowreception-2.jpg",
+      "/images/nowreception-3.jpg",
+      "/images/nowreception-4.jpg",  
     ],
     duration: "1か月",
     teamSize: "5名",
