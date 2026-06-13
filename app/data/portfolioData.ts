@@ -226,7 +226,7 @@ export const PROJECTS_DATA: AppProject[] = [
     ],
     duration: "2週間",
     teamSize: "2名",
-    achievement: "インターンシップ成果物",
+    achievement: "-",
     myRoles: ["システム設計", "ServiceNow実装"],
     contributionRatio: "50%"
   }
