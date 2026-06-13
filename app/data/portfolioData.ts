@@ -199,7 +199,7 @@ export const PROJECTS_DATA: AppProject[] = [
     platform: ["Web"],
     status: "OFFLINE",
     githubUrl: "",
-    title: "富士山登山予約システム",
+    title: "富士山登山管理システム",
     subtitle: "オーバーツーリズムと弾丸登山に挑む",
     year: "2023",
     role: "インターンシップ",
