@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- ネオブルータリズム風の太い黒枠と黒背景 -->
+  <rect x="1" y="1" width="30" height="30" rx="4" fill="#111111" stroke="#000000" stroke-width="2"/>
+  
+  <!-- 力強い白文字の「K」 -->
+  <text x="16" y="22" 
+        font-family="Impact, 'Arial Black', sans-serif" 
+        font-size="20" 
+        font-weight="900" 
+        fill="#FFFFFF" 
+        text-anchor="middle">K</text>
+</svg>
