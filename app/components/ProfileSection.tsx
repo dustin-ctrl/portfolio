@@ -227,7 +227,7 @@ const ProfileSection = React.forwardRef(
                         storyFired ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
                       }`}
                     >
-                      アイデアを、思いのままに。
+                      ワクワクを、カタチに。
                     </span>
                   </span>
 
@@ -243,10 +243,10 @@ const ProfileSection = React.forwardRef(
                   それらをコードに落とし込み、「こんな機能やデザインだったら絶対に面白い！」と、脳内のイメージをそのまま100%の形へ、思いのままに具現化していくプロセスそのものに、何よりもワクワクします。
                 </p>
                 <p>
-                  もっと面白いものを作りたい、もっと自分の理想を形にしたい。その純粋な衝動に突き動かされながら、個人開発やハッカソンという限られた時間の中で、全力のモノづくりに没頭しています。
+                  もっと面白いものを作りたい、もっと自分の理想をカタチにしたい。その純粋な好奇心に突き動かされながら、個人開発やハッカソンという限られた時間の中で、全力のモノづくりに没頭しています。
                 </p>
                 <p className="text-slate-900 font-bold">
-                  ここでは、そんな私の「アイデアを、思いのままに。」形にしてきた軌跡と成果物を記録しています。
+                  ここでは、そんな私の「ワクワクを、カタチに。」してきた軌跡と成果物を記録しています。
                 </p>
               </div>
             </div>
@@ -311,13 +311,13 @@ const ProfileSection = React.forwardRef(
                   <p>
                     ・{" "}
                     <a href="https://jphacks.com/2025/result/" target="_blank" rel="noopener noreferrer" className="text-slate-600 font-bold hover:text-black hover:underline underline-offset-4 decoration-2 transition-colors duration-200">
-                      JPHACKS 2025 全国大会スポンサー賞受賞
+                      JPHACKS 2025 全国大会スポンサー賞
                     </a>
                   </p>
                   <p>
                     ・{" "}
                     <a href="https://www.servicenow.com/jp/events/world-forum/tokyo.html" target="_blank" rel="noopener noreferrer" className="text-slate-600 font-bold hover:text-black hover:underline underline-offset-4 decoration-2 transition-colors duration-200">
-                      ServiceNow Hackathon 2025 審査員特別賞（ブログ賞）受賞
+                      ServiceNow Hackathon 2025 審査員特別賞
                     </a>
                   </p>
                 </div>
