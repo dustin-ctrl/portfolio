@@ -20,7 +20,7 @@ export default function TermsPage() {
           <section>
             <h2 className="font-bold text-lg mb-2 font-mono flex items-center">▶ 1. 総則および同意</h2>
             <p className="text-slate-600 pl-4">
-              本規約は、開発者 K.Takahashi（以下「当方」）が提供するiOSアプリケーション「ClipGym」（以下「本アプリ」）の利用条件を定めるものです。ユーザーは本アプリをダウンロード、インストール、または利用することにより、本規約およびApple社の定める「標準エンドユーザーライセンス契約（Standard EULA）」に同意したものとみなされます。
+              本規約は、開発者（以下「当方」）が提供するiOSアプリケーション「ClipGym」（以下「本アプリ」）の利用条件を定めるものです。ユーザーは本アプリをダウンロード、インストール、または利用することにより、本規約およびApple社の定める「標準エンドユーザーライセンス契約（Standard EULA）」に同意したものとみなされます。
             </p>
           </section>
 

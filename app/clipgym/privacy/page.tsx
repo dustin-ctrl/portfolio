@@ -20,7 +20,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="font-bold text-lg mb-2 font-mono flex items-center">▶ 1. 個人情報の収集と不送信について</h2>
             <p className="text-slate-600 pl-4">
-              開発者 K.Takahashi（以下「当方」）が開発・提供するiOSアプリケーション「ClipGym」（以下「本アプリ」）は、ユーザーの氏名、メールアドレス、連絡先、位置情報などの個人情報を一切収集、保持、または外部のサーバーへ送信することはありません。
+              開発者（以下「当方」）が開発・提供するiOSアプリケーション「ClipGym」（以下「本アプリ」）は、ユーザーの氏名、メールアドレス、連絡先、位置情報などの個人情報を一切収集、保持、または外部のサーバーへ送信することはありません。
             </p>
           </section>
 
