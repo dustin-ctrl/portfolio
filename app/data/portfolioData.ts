@@ -1,45 +1,53 @@
 import { AppProject } from "../types/portfolio";
 
 export const PROJECTS_DATA: AppProject[] = [
-  // {
-  //   id: "fitlink",
-  //   platform: ["Mobile"],
-  //   status: "ONLINE",
-  //   githubUrl: "https://github.com/yourusername/FitLink",
-  //   title: "ClipGym",
-  //   subtitle: "お家トレーニングをもっと手軽に、継続的に。",
-  //   year: "2026",
-  //   role: "個人開発",
-  //   tech: ["Swift", "SwiftUI", "SwiftData", "AVKit", "StoreKit 2"],
-  //   comments: ["初めてのiOSアプリ","フィットネス", "動画連動型"],
-  //   overview: "「動画を見ながら運動する」という現代の宅トレ・ジムトレスタイルに特化した、iOS用フィットネスアプリ。ただ動画を流すだけでなく、ユーザーが自身のオリジナルメニューやトレーニングコースをシームレスに管理・記録できる体験を提供します。",
-  //   problem: "YouTube動画を見ながらお家で筋トレやストレッチをする際、「どの動画をどの順番で、いつやるか」の管理・記録が難しく、せっかくのモチベーションが持続しないという課題がありました。",
-  //   features: "・動画を見ながらトレーニングできる『AVKitプレイヤー連動型トラッカー』\n・自分だけのオリジナルメニューを作れる『トレーニングコース管理システム』\n・記録したデータをまとめたダッシュボード\n・ステータスに応じた相棒キャラからの励ましコメント",
-  //   highlight: "ディープ・アイスブルーを基調とした、サイバー感と高級スポーツブランドのような洗練さを融合したダークテーマUI。iPhone標準のドラムロールとクイックショートカットを融合させた、絶対に画面崩れを起こさない頑丈な『スマートリマインダー』。そして、洗練されたアプリアイコンとアプリ内デザインが見事にシンクロする、一貫したブランド体験が最大の強みです。",
-  //   highlightProblem: "アプリ切り替えの手間と、毎日継続したくなるデザインの欠如",
-  //   highlightApproach: "SwiftUIによる洗練されたダークテーマUI & ローカルDB化",
-  //   highlightBenefit: "行き来ゼロのシームレスな運動記録と極上のガジェット感の実現",
-  //   architecture: "SwiftUIを全面的に採用したモダンな宣言型UIに加え、データの永続化にはiOS最新のローカルデータベース『SwiftData』を活用。サーバー不要で高速かつプライバシーに配慮したデータ保持を実現しています。また、動画再生にはAVKit、将来的なマネタイズ（テーマ解放やコース制限解除）を見据えて最新のStoreKit 2を組み込める拡張性の高いアーキテクザで設計されています。",
-  //   // 💡 1. ClipGymの構成図
-  //   architectureFlow: [
-  //     { label: "User", type: "user" },
-  //     { label: "iOS", type: "platform" },
-  //     { label: "ClipGym (SwiftUI)", type: "app" }, // ➔ 名前と言語をセットに！
-  //     { label: "SwiftData", type: "external" }
-  //   ],
-  //   imageUrl: "/images/clipgym-2.jpg",
-  //   galleryImages: [
-  //     "/images/clipgym2.jpg",
-  //     "/images/clipfit2.png",
-  //   ],
-  //   duration: "1週間",
-  //   teamSize: "個人",
-  //   achievement: "-",
-  //   myRoles: ["企画", "UI・UXデザイン", "iOSアプリ実装"],
-  //   contributionRatio: "100%",
-  //   termsUrl: "/clipgym/terms", 
-  //   privacyUrl: "/clipgym/privacy"
-  // },
+  {
+    id: "fitlink",
+    platform: ["Mobile"],
+    status: "ONLINE",
+    githubUrl: "https://github.com/yourusername/FitLink",
+    title: "ClipGym",
+    subtitle: "お家トレーニングをもっと手軽に、継続的に。",
+    year: "2026",
+    role: "個人開発",
+    tech: ["Swift", "SwiftUI", "SwiftData", "AVKit"],
+    comments: ["初めてのiOSアプリ","フィットネス", "動画トレーニング"],
+    overview: "いつものトレーニング動画を自分好みのコースにまとめ、アプリ内で視聴・ワンタップで記録・いつでも振り返りができる、iOS専用の宅トレ・ジムトレ特化型フィットネスアプリです。",
+    // 💡 解決した課題・背景
+    problem: "宅トレ動画の視聴において、「YouTubeのプレイリスト等で動画が整理されていない」「動画プレイヤーと記録アプリが連動しておらず、手動記録のハードルが高い」という課題がありました。特にライト層においては、この管理と記録の煩雑さが、トレーニングの継続を阻む最大の要因となっていました。",
+    
+    // 💡 実装した主な機能
+    features: "・お気に入り動画を登録するだけで独自のセットリストを作成できる『コース編成機能』\n・動画を視聴するだけで、画面遷移なく自動で実績が残る『AVKit連動トラッカー』\n・複雑な数値入力を排除し、継続の視認性のみに特化した『アクティビティダッシュボード』",
+    
+    // 💡 技術的ハイライト（解説文）
+    highlight: "継続のハードルを下げるため、手動入力を徹底的に排除し、OS標準の動画再生コンポーネント（AVKit）のシーク状態や再生完了トリガーと連動した自動記録ロジックを構築。また、ライト層が直感的に操作できるよう、ドラムロールとクイックショートカットを融合させた堅牢な『スマートリマインダー』を実装し、多様な画面サイズでのレイアウト崩れを防ぐ設計にしました。",
+    
+    // 💡 3つのボックス（課題・実装・工夫）
+    highlightProblem: "動画管理の形骸化と記録の手間、ストイックな仕組みによるライト層の離脱",
+    highlightApproach: "AVKitの再生ステータスとSwiftData（ローカルDB）をシームレスに同期させる自動記録処理",
+    highlightBenefit: "『動画を観るだけで記録が終わる』手離れの良さと、操作の迷いをなくしたUIによる継続率の向上",
+    
+    // 💡 アーキテクチャ解説文
+    architecture: "SwiftUIを全面的に採用したモダンな宣言型UIに加え、データ永続化にはApple最新のローカルデータベース『SwiftData』を活用。サーバー不要で高速、かつユーザーのプライバシーに配慮したローカル完結型のデータ保持を実現しています。また、動画再生にはAVKitをネイティブ統合し、外部通信のオーバーヘッドを抑えた低遅延で堅牢なアーキテクチャで設計されています。",
+    
+    // 💡 1. ClipGymの構成図
+    architectureFlow: [
+      { label: "User", type: "user" },
+      { label: "iOS (AVKit)", type: "platform" },
+      { label: "ClipGym (SwiftUI)", type: "app" },
+      { label: "SwiftData", type: "external" } // ➔ 現状動いているピュアなローカル完結構成へ
+    ],
+    imageUrl: "/images/clipgym-1.jpg",
+    galleryImages: [
+      "/images/clipgym2.jpg",
+      "/images/clipfit2.png",
+    ],
+    duration: "10日",
+    teamSize: "個人",
+    achievement: "-",
+    myRoles: ["企画", "UI・UXデザイン", "iOSアプリ実装"],
+    contributionRatio: "100%"
+  },
   {
     id: "disaster-nav",
     platform: ["Web"],

@@ -66,8 +66,8 @@ export default function TermsPage() {
 
         <div className="border-t-4 border-black mt-12 pt-6 flex justify-between items-center font-mono text-xs font-bold">
           <p className="text-slate-400">改訂日: 2026年6月11日</p>
-          <Link href="/#work" className="px-4 py-2 border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            BACK TO HOME ←
+          <Link href="/clipgym" className="px-4 py-2 border-2 border-black bg-black text-white hover:bg-white hover:text-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            BACK ←
           </Link>
         </div>
 
