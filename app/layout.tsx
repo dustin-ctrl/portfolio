@@ -8,11 +8,15 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 // 🔒 このメタデータはここに置いておくだけで、Next.jsが自動的に読み込んでGoogleに届けてくれます！
 export const metadata: Metadata = {
+  metadataBase: new URL("https://k-takahashi.vercel.app"),
   title: "K.Takahashi Portfolio",
   description: "髙橋 孝太朗のポートフォリオサイトです。ハッカソンやServiceNowでの開発経験をまとめました。",
   // siteNameを追加することで、Googleに「サイト名」を強力にアピールできます
   openGraph: {
     siteName: "K.Takahashi Portfolio",
+  },
+  alternates: {
+    canonical: "/",
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,

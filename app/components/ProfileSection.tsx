@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React, { ForwardedRef, useState } from "react";
+import { ACHIEVEMENTS } from "../data/achievements";
 
 interface ProfileSectionProps {
   activeSection: string;
@@ -171,7 +172,7 @@ const ProfileSection = React.forwardRef(
                   <div className="grid grid-cols-3 border-b-2 border-black/10 pb-3 items-start">
                     <span className="font-mono font-black text-slate-400 text-[10px] sm:text-xs tracking-wider pt-0.5">ROLE</span>
                     <span className="col-span-2 font-black text-slate-900 text-sm sm:text-lg leading-snug">
-                      Master's Student
+                      Master&apos;s Student
                     </span>
                   </div>
                   
@@ -269,7 +270,7 @@ const ProfileSection = React.forwardRef(
                   <div className="font-black text-slate-900 tracking-wider">DEVELOPMENT</div>
                 </div>
                 <div className="md:col-span-8 flex flex-wrap gap-2">
-                  {["Python","JavaScript","Next.js", "ios(Swift)", "PHP",  "Kotlin", "Tailwind CSS"].map((tech) => (
+                  {["Python","JavaScript","Next.js", "iOS / Swift", "PHP",  "Kotlin", "Tailwind CSS"].map((tech) => (
                     <span key={tech} className="px-3 py-1 bg-white text-slate-900 text-xs font-black tracking-wide border-2 border-black rounded-md shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] uppercase">
                       {tech}
                     </span>
@@ -302,24 +303,14 @@ const ProfileSection = React.forwardRef(
                   <div className="font-black text-slate-900 tracking-wider">ACHIEVEMENTS</div>
                 </div>
                 <div className="md:col-span-8 space-y-3 text-xs sm:text-base font-bold text-slate-600 leading-relaxed tracking-wide">
-                  <p>
-                    ・{" "}
-                    <a href="https://jphacks.com/information/hackday-result-2024/" target="_blank" rel="noopener noreferrer" className="text-slate-600 font-bold hover:text-black hover:underline underline-offset-4 decoration-2 transition-colors duration-200">
-                      JPHACKS 2024・2025 地方大会優勝
-                    </a>
-                  </p>
-                  <p>
-                    ・{" "}
-                    <a href="https://jphacks.com/2025/result/" target="_blank" rel="noopener noreferrer" className="text-slate-600 font-bold hover:text-black hover:underline underline-offset-4 decoration-2 transition-colors duration-200">
-                      JPHACKS 2025 全国大会スポンサー賞
-                    </a>
-                  </p>
-                  <p>
-                    ・{" "}
-                    <a href="https://www.servicenow.com/jp/events/world-forum/tokyo.html" target="_blank" rel="noopener noreferrer" className="text-slate-600 font-bold hover:text-black hover:underline underline-offset-4 decoration-2 transition-colors duration-200">
-                      ServiceNow Hackathon 2025 審査員特別賞
-                    </a>
-                  </p>
+                  {ACHIEVEMENTS.map((achievement) => (
+                    <p key={achievement.id}>
+                      ・{" "}
+                      <a href={achievement.href} target="_blank" rel="noopener noreferrer" className="text-slate-600 font-bold hover:text-black hover:underline underline-offset-4 decoration-2 transition-colors duration-200">
+                        {achievement.title}
+                      </a>
+                    </p>
+                  ))}
                 </div>
               </div>
             </div>

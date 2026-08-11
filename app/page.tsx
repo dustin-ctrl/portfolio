@@ -6,6 +6,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { AppProject } from "./types/portfolio";
 import { PROJECTS_DATA } from "./data/portfolioData";
 import Header from "./components/Header";
+import HeroSection from "./components/HeroSection";
 import Opening from "./components/Opening";
 import ProfileSection from "./components/ProfileSection";
 import WorkSection from "./components/WorkSection";
@@ -29,6 +30,11 @@ export function HomeContent() {
 
   // ─── 💡 修正ポイント：スマホの処理遅延に100%耐える安全タイマー ───
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const reducedMotionTimer = window.setTimeout(() => setIsOpening(false), 0);
+      return () => window.clearTimeout(reducedMotionTimer);
+    }
+
     const outlineTimer = setTimeout(() => {
       setIsOutline(true);
     }, 400);
@@ -113,13 +119,14 @@ export function HomeContent() {
         />
       )}
 
-{/* 固定ヘッダー */}
       {/* 固定ヘッダー */}
       <Header activeSection={activeSection} scrollToTop={scrollToTop} />
 
       {/* ─── メインコンテンツ ─── */}
       {/* 💡 修正：pt（上の余白）を増やしてヘッダーとの間隔を空け、一括の space-y は削除しました */}
-      <main className="flex-grow pt-28 sm:pt-40 md:pt-44 w-full relative z-0 flex flex-col">
+      <main className="flex-grow pt-28 sm:pt-36 md:pt-40 w-full relative z-0 flex flex-col">
+
+        <HeroSection isReady={!isOpening} />
         
         {/* 1. 制作実績セクション（WORK） */}
         <div id="work" ref={workRef} className="scroll-mt-24 sm:scroll-mt-32">

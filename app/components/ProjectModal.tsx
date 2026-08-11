@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { AppProject } from "../types/portfolio";
 
 interface ProjectModalProps {
@@ -9,7 +9,7 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
-  const displayImages = (project as any).galleryImages || [project.imageUrl];
+  const displayImages = project.galleryImages || [project.imageUrl];
 
   // ─── 画像拡大用の状態管理 ───
   const [activeImageUrl, setActiveImageUrl] = useState<string | null>(null);
@@ -19,6 +19,31 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const [currentTranslateY, setCurrentTranslateY] = useState<number>(0);
   const [isSwiping, setIsSwiping] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const modalTitleId = `project-modal-title-${project.id}`;
+
+  useEffect(() => {
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+    closeButtonRef.current?.focus();
+
+    return () => previouslyFocusedRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+
+      if (activeImageUrl) {
+        setActiveImageUrl(null);
+      } else {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [activeImageUrl, onClose]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (activeImageUrl) return;
@@ -56,6 +81,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       onClick={onClose}
     >
       <div 
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={modalTitleId}
         className="relative w-full sm:w-11/12 max-w-6xl h-full sm:h-auto max-h-[100vh] sm:max-h-[92vh] flex flex-col pointer-events-none animate-[scaleUp_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards]"
         style={{
           transform: currentTranslateY > 0 ? `translateY(${currentTranslateY}px)` : undefined,
@@ -64,7 +92,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       >
         {/* クローズボタン */}
         <button 
+          ref={closeButtonRef}
           onClick={onClose} 
+          aria-label={`${project.title.replace(/<[^>]*>/g, "")}の詳細を閉じる`}
           className="absolute top-4 right-4 sm:-top-3 sm:-right-3 bg-white border-3 border-black text-black w-10 h-10 rounded-full flex items-center justify-center font-black text-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-[120] pointer-events-auto"
         >
           ✕
@@ -100,7 +130,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </span> */}
 
                 <span className="text-slate-400 whitespace-nowrap">
-                  {project.year} // {project.role}
+                  {project.year} {"//"} {project.role}
                 </span>
               </div>
 
@@ -109,21 +139,21 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 
                 {/* 左：タイトル ＆ サブタイトル */}
                 <div className="flex-1">
-                  <h4 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-[-0.04em] leading-[1.1]" dangerouslySetInnerHTML={{ __html: project.title }} />
+                  <h4 id={modalTitleId} className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-[-0.04em] leading-[1.1]" dangerouslySetInnerHTML={{ __html: project.title }} />
                   
-                  {(project as any).subtitle && (
+                  {project.subtitle && (
                     <p className="text-xs sm:text-sm font-mono font-bold text-slate-400 tracking-wide mt-1.5 uppercase">
-                      { (project as any).subtitle }
+                      {project.subtitle}
                     </p>
                   )}
                 </div>
 
                 {/* 右：アクションボタンエリア（ONLINE時はLPのみ、それ以外はGITHUBを表示） */}
-                {((project as any).status === "ONLINE" || (project.githubUrl && project.githubUrl.trim().length > 0) || (project as any).linkUrl) && (
+                {(project.status === "ONLINE" || (project.githubUrl && project.githubUrl.trim().length > 0) || project.linkUrl) && (
                   <div className="inline-flex flex-wrap items-center gap-2.5 pointer-events-auto sm:mb-1">
                     
                     {/* 🟢 ONLINE時は、一番目立たせたい「VIEW SITE」だけをデカデカと表示！ */}
-                    {(project as any).status === "ONLINE" ? (
+                    {project.status === "ONLINE" ? (
                       <a 
                         href="/clipgym" 
                         className="text-center px-6 py-2 bg-[#0dd3c5] border-2 border-black rounded-lg text-xs font-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all font-mono text-black cursor-pointer whitespace-nowrap uppercase tracking-wider animate-pulse"
@@ -145,9 +175,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     )}
 
                     {/* ④ LIVE SITE ボタン（もし他の外部URLが特別にある場合のみ） */}
-                    {(project as any).status !== "ONLINE" && (project as any).linkUrl && (project as any).linkUrl.trim().length > 0 && (
+                    {project.status !== "ONLINE" && project.linkUrl && project.linkUrl.trim().length > 0 && (
                       <a 
-                        href={(project as any).linkUrl} 
+                        href={project.linkUrl}
                         target="_blank" 
                         rel="noreferrer" 
                         className="text-center px-4 py-1.5 bg-lime-400 border-2 border-black rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono text-black cursor-pointer whitespace-nowrap"
@@ -183,17 +213,19 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 
                 <div className="flex sm:grid sm:grid-cols-3 gap-4 overflow-x-auto sm:overflow-x-visible pb-3 sm:pb-0 scrollbar-none snap-x snap-mandatory">
                   {displayImages.slice(0, 3).map((imgUrl: string, idx: number) => (
-                    <div 
+                    <button
+                      type="button"
                       key={idx} 
                       onClick={() => setActiveImageUrl(imgUrl)}
-                      className="w-[280px] sm:w-full flex-shrink-0 snap-center relative aspect-video bg-slate-50 rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center cursor-zoom-in active:scale-[0.98] transition-transform"
+                      aria-label={`${project.title.replace(/<[^>]*>/g, "")}の画像${idx + 1}を拡大する`}
+                      className="w-[280px] sm:w-full flex-shrink-0 snap-center relative aspect-video bg-slate-50 rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center cursor-zoom-in active:scale-[0.98] transition-transform focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
                     >
                       <img 
                         src={imgUrl} 
-                        alt="screenshot" 
+                        alt={`${project.title.replace(/<[^>]*>/g, "")} screenshot ${idx + 1}`}
                         className="w-full h-full object-cover transition-transform duration-300 hover:scale-[1.03]" 
                       />
-                    </div>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -216,21 +248,21 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-between min-h-[58px] sm:min-h-[62px]">
                       <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase leading-none mb-1">DURATION</span>
                       <span className="text-xs lg:text-sm font-black text-black mt-auto flex items-center justify-center flex-1">
-                        {(project as any).duration || "3日間"}
+                        {project.duration || "3日間"}
                       </span>
                     </div>
 
                     <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-between min-h-[58px] sm:min-h-[62px]">
                       <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase leading-none mb-1">TEAM</span>
                       <span className="text-xs lg:text-sm font-black text-black mt-auto flex items-center justify-center flex-1">
-                        {(project as any).teamSize || "4名"}
+                        {project.teamSize || "4名"}
                       </span>
                     </div>
 
                     <div className="bg-white border border-slate-300 p-2 rounded-lg flex flex-col justify-between min-h-[58px] sm:min-h-[62px]">
                       <span className="block text-[9px] lg:text-[10px] font-mono font-black text-slate-400 uppercase leading-none mb-1">AWARD</span>
                       <span className="text-[10px] sm:text-xs lg:text-sm font-black text-emerald-600 leading-tight mt-auto flex items-center justify-center flex-1">
-                        {(project as any).achievement || "全国出場"}
+                        {project.achievement || "全国出場"}
                       </span>
                     </div>
                   </div>
@@ -244,7 +276,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   <div className="bg-white border border-slate-300 p-3 rounded-lg flex items-center justify-between min-h-[58px] sm:min-h-[62px] flex-1">
                     <div>
                       <div className="flex flex-wrap gap-1">
-                        {((project as any).myRoles || [project.role]).map((r: string) => (
+                        {(project.myRoles || [project.role]).map((r: string) => (
                           <span key={r} className="bg-slate-50 border border-slate-300 text-[9px] lg:text-[10px] font-bold px-1.5 py-0.5 rounded">
                             {r}
                           </span>
@@ -253,7 +285,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     </div>
                     <div className="text-right flex-shrink-0 ml-2">
                       <span className="block text-[8px] lg:text-[9px] font-mono font-black text-slate-400">RATIO</span>
-                      <span className="text-xl lg:text-2xl font-mono font-black text-blue-600">{(project as any).contributionRatio || "70%"}</span>
+                      <span className="text-xl lg:text-2xl font-mono font-black text-blue-600">{project.contributionRatio || "70%"}</span>
                     </div>
                   </div>
                 </div>
@@ -280,7 +312,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       ✓ 実装した主な機能
                     </span>
                     <div className="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed text-justify whitespace-pre-wrap px-1">
-                      {(project as any).features || "・主なシステム機能一覧が入ります。"}
+                      {project.features || "・主なシステム機能一覧が入ります。"}
                     </div>
                   </div>
                 </div>
@@ -299,15 +331,15 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] sm:text-[11px] font-mono">
                   <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
                     <span className="block text-amber-400 font-bold mb-0.5">【課題】</span>
-                    {(project as any).highlightProblem || "課題の定義"}
+                    {project.highlightProblem || "課題の定義"}
                   </div>
                   <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
                     <span className="block text-cyan-400 font-bold mb-0.5">【実装】</span>
-                    {(project as any).highlightApproach || "技術的アプローチ"}
+                    {project.highlightApproach || "技術的アプローチ"}
                   </div>
                   <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
                     <span className="block text-emerald-400 font-bold mb-0.5">【工夫】</span>
-                    {(project as any).highlightBenefit || "得られた効果・メリット"}
+                    {project.highlightBenefit || "得られた効果・メリット"}
                   </div>
                 </div>
               </div>
@@ -334,7 +366,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                             ? 'px-3 py-1.5 rounded-full bg-slate-200 border border-dashed border-slate-400 text-slate-600 font-medium' :
                           step.type === 'app' 
                             ? 'relative px-3 py-3 rounded-xl bg-amber-50 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-black ring-2 md:ring-4 ring-amber-400/30 font-black' :
-                          step.type === 'external' || step.type === ('core' as any)
+                          step.type === 'external'
                             ? 'px-3 py-2 rounded-md bg-blue-600 border border-blue-700 text-white tracking-wide shadow-sm' :
                           'px-2 py-1 bg-white border border-slate-300 text-slate-700'
                         }`}>
@@ -368,6 +400,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
       {/* 画像拡大ライトボックス */}
       {activeImageUrl && (
         <div 
+          role="dialog"
+          aria-modal="true"
+          aria-label="拡大画像"
           className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm cursor-zoom-out animate-[fadeIn_0.15s_ease-out_forwards]"
           onClick={() => setActiveImageUrl(null)}
         >
@@ -377,6 +412,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           >
             <button 
               onClick={() => setActiveImageUrl(null)}
+              aria-label="拡大画像を閉じる"
               className="absolute -top-3 -right-3 bg-rose-400 border-2 border-black text-black w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-[210]"
             >
               ✕

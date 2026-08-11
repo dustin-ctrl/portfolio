@@ -100,6 +100,7 @@ const WorkSection = React.forwardRef(
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
+                  aria-pressed={isActive}
                   className={`border-2 sm:border-3 border-black px-2 py-0.5 sm:px-4 sm:py-1.5 transition-all duration-150 uppercase shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] sm:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[0.5px_0.5px_0px_0px_rgba(0,0,0,1)] cursor-pointer rounded-none shrink-0 ${
                     isActive ? "bg-black text-white" : "bg-white text-slate-800 hover:bg-slate-100"
                   }`}
@@ -140,6 +141,7 @@ const WorkSection = React.forwardRef(
                 const isCenter = offset === 0;
                 const isLeft = offset === -1;
                 const isRight = offset === 1;
+                const projectTitle = project.title.replace(/<[^>]*>/g, "");
                 
                 // 💡 非アクティブカードを滑らかに左右へ逃がすスタイル定義
                 let transformStyle = "opacity-0 pointer-events-none scale-75 z-0 invisible";
@@ -151,10 +153,19 @@ const WorkSection = React.forwardRef(
                   <section 
                     key={project.id} 
                     onClick={() => isCenter && onSelectProject(project)} 
+                    onKeyDown={(event) => {
+                      if (!isCenter || (event.key !== "Enter" && event.key !== " ")) return;
+                      event.preventDefault();
+                      onSelectProject(project);
+                    }}
+                    role={isCenter ? "button" : undefined}
+                    tabIndex={isCenter ? 0 : -1}
+                    aria-label={isCenter ? `${projectTitle}の詳細を見る` : undefined}
+                    aria-hidden={!isCenter}
                     onTouchStart={isCenter ? handleTouchStart : undefined}
                     onTouchEnd={isCenter ? handleTouchEnd : undefined}
                     /* 💡 col-start-1 row-start-1 で全カードを同じ位置に重ねることで、アクティブなカードの高さに親が自動追従します */
-                    className={`col-start-1 row-start-1 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group touch-pan-y
+                    className={`col-start-1 row-start-1 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group touch-pan-y focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-amber-400
                       min-h-[420px] xs:min-h-[430px] sm:min-h-[470px] md:min-h-[510px] ${transformStyle}`}
                   >
                     
@@ -165,7 +176,7 @@ const WorkSection = React.forwardRef(
                       <div className="shrink-0 mb-2">
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <div className="flex items-center gap-1.5">
-                            <span className="text-xs sm:text-sm font-mono text-slate-950 font-black">0{index + 1} // </span>
+                            <span className="text-xs sm:text-sm font-mono text-slate-950 font-black">0{index + 1} {"//"} </span>
                             <div className="inline-flex gap-1 min-w-0 overflow-hidden">
                                   {Array.isArray(project.platform) ? (
                                     project.platform.map((plat, platIdx) => (
@@ -198,9 +209,9 @@ const WorkSection = React.forwardRef(
                         />    
 
                         {/* TITLEの直下にSUBTITLEを表示 */}
-                        {(project as any).subtitle && (
+                        {project.subtitle && (
                           <p className="text-[10px] sm:text-xs font-mono font-bold text-slate-400 tracking-wide mt-1 line-clamp-1 uppercase">
-                            { (project as any).subtitle }
+                            {project.subtitle}
                           </p>
                         )}
                       </div>
