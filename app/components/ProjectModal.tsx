@@ -8,6 +8,35 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
+function getYouTubeEmbedUrl(url: string): string | null {
+  try {
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.replace(/^www\./, "");
+    let videoId = "";
+
+    if (hostname === "youtu.be") {
+      videoId = parsedUrl.pathname.split("/").filter(Boolean)[0] ?? "";
+    } else if (hostname === "youtube.com" || hostname === "m.youtube.com") {
+      if (parsedUrl.pathname === "/watch") {
+        videoId = parsedUrl.searchParams.get("v") ?? "";
+      } else {
+        const [, route, id] = parsedUrl.pathname.split("/");
+        if (["embed", "shorts", "live"].includes(route)) videoId = id ?? "";
+      }
+    }
+
+    return /^[A-Za-z0-9_-]{11}$/.test(videoId)
+      ? `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function isVideoAsset(url: string): boolean {
+  return /\.(mp4|m4v|webm|mov)(?:[?#]|$)/i.test(url);
+}
+
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   const displayImages = project.galleryImages || [project.imageUrl];
 
@@ -208,25 +237,68 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             {displayImages.length > 0 && (
               <div className="space-y-2">
                 <span className="block text-[10px] font-mono font-black text-slate-400 uppercase tracking-wider px-1">
-                  01. GALLERY <span className="text-[9px] text-amber-500 lowercase normal-case font-bold ml-1">(click to enlarge)</span>
+                  01. GALLERY <span className="text-[9px] text-amber-500 lowercase normal-case font-bold ml-1">(play video / click image to enlarge)</span>
                 </span>
                 
                 <div className="flex sm:grid sm:grid-cols-3 gap-4 overflow-x-auto sm:overflow-x-visible pb-3 sm:pb-0 scrollbar-none snap-x snap-mandatory">
-                  {displayImages.slice(0, 3).map((imgUrl: string, idx: number) => (
-                    <button
-                      type="button"
-                      key={idx} 
-                      onClick={() => setActiveImageUrl(imgUrl)}
-                      aria-label={`${project.title.replace(/<[^>]*>/g, "")}の画像${idx + 1}を拡大する`}
-                      className="w-[280px] sm:w-full flex-shrink-0 snap-center relative aspect-video bg-slate-50 rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center cursor-zoom-in active:scale-[0.98] transition-transform focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
-                    >
-                      <img 
-                        src={imgUrl} 
-                        alt={`${project.title.replace(/<[^>]*>/g, "")} screenshot ${idx + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-[1.03]" 
-                      />
-                    </button>
-                  ))}
+                  {displayImages.slice(0, 3).map((mediaUrl: string, idx: number) => {
+                    const youtubeEmbedUrl = getYouTubeEmbedUrl(mediaUrl);
+                    const projectTitle = project.title.replace(/<[^>]*>/g, "");
+
+                    if (isVideoAsset(mediaUrl)) {
+                      return (
+                        <div
+                          key={mediaUrl}
+                          className="w-[280px] sm:w-full flex-shrink-0 snap-center relative aspect-video bg-black rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                          <video
+                            src={mediaUrl}
+                            poster={project.imageUrl}
+                            aria-label={`${projectTitle} デモ動画`}
+                            className="absolute inset-0 h-full w-full object-contain"
+                            controls
+                            playsInline
+                            preload="metadata"
+                          />
+                        </div>
+                      );
+                    }
+
+                    if (youtubeEmbedUrl) {
+                      return (
+                        <div
+                          key={mediaUrl}
+                          className="w-[280px] sm:w-full flex-shrink-0 snap-center relative aspect-video bg-black rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                          <iframe
+                            src={youtubeEmbedUrl}
+                            title={`${projectTitle} デモ動画`}
+                            className="absolute inset-0 h-full w-full"
+                            loading="lazy"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                          />
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <button
+                        type="button"
+                        key={mediaUrl}
+                        onClick={() => setActiveImageUrl(mediaUrl)}
+                        aria-label={`${projectTitle}の画像${idx + 1}を拡大する`}
+                        className="w-[280px] sm:w-full flex-shrink-0 snap-center relative aspect-video bg-slate-50 rounded-xl overflow-hidden border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center cursor-zoom-in active:scale-[0.98] transition-transform focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
+                      >
+                        <img
+                          src={mediaUrl}
+                          alt={`${projectTitle} screenshot ${idx + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                        />
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

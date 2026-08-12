@@ -7,6 +7,11 @@ export interface Achievement {
 // 新しい実績から順に並べる。Helloセクションは先頭の1件を表示する。
 export const ACHIEVEMENTS: Achievement[] = [
   {
+    id: "aws-2026-bset-award",
+    title: "広島県 地域創生・社会課題解決AIコンテスト2026 最優秀賞",
+    href: "",
+  },
+  {
     id: "jphacks-2025-sponsor-award",
     title: "JPHACKS 2025 全国大会スポンサー賞",
     href: "https://jphacks.com/2025/result/",

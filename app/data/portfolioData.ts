@@ -2,6 +2,94 @@ import { AppProject } from "../types/portfolio";
 
 export const PROJECTS_DATA: AppProject[] = [
   {
+    id: "sumahai",
+    platform: ["Web"],
+    status: "OFFLINE",
+    githubUrl: "https://github.com/dustin-ctrl/smahai-smart-delivery",
+
+    title: "スマ配",
+    subtitle: "少しの不在を、再配達にしない。",
+    year: "2026",
+    role: "チーム開発（3名）",
+
+    tech: [
+      "LINE Messaging API",
+      "AWS",
+      "OpenStreetMap",
+      "OSRM",
+      "Web Application"
+    ],
+
+    comments: [
+      "AWSハッカソン",
+      "地域課題",
+      "配送支援",
+      "経路最適化"
+    ],
+
+    overview:
+      "配達前に受取人の在宅状況をLINEで確認し、その回答に応じて配送順を柔軟に変更する配送支援システムです。不在が確定した住所への無駄な訪問を避けるとともに、短時間の外出であれば帰宅予定を考慮して配達順を調整し、再配達とドライバーの負担を減らします。",
+
+    // 解決した課題・背景
+    problem:
+      "東広島市役所へのヒアリングを通じて、広島地域では運送業界の人手不足に加え、中山間地域における配送先の分散が、配送効率をさらに低下させていることを知りました。特に再配達では、ドライバーが不在を知らないまま現地を訪問し、荷物を届けられずに持ち帰るという無駄が発生します。一方、受取人側にも、わずかな外出によって荷物を受け取れず、再び配達を待たなければならないという負担がありました。",
+
+    // 実装した主な機能
+    features:
+      "・配達が近づいた受取人へ、LINEで在宅状況の確認を送信する『配達接近通知』\n・受取人が「在宅」「一時不在」「本日不在」を簡単に回答できる『在宅状況共有』\n・回答内容をドライバー画面へ反映し、可能な範囲で配送順を再計算する『経路変更機能』\n・現在の配送先、到着予定時刻、配送順、地図を確認できる『ドライバー向け管理画面』",
+
+    // 技術的ハイライト
+    highlight:
+      "既存の日時指定や置き配では対応しにくい、配達直前に発生した短時間の不在に着目しました。受取人が普段利用しているLINEをインターフェースとすることで、専用アプリをインストールする必要がない設計としています。受取人から送信された在宅状況を配送データへ反映し、OSRMとOpenStreetMapを利用して配送順と経路を再計算するプロトタイプを構築しました。",
+
+    // 3つのボックス（課題・実装・効果）
+    highlightProblem:
+      "ドライバーと受取人の状況が共有されず、不在宅への無駄な訪問や、わずかな外出による再配達が発生している",
+
+    highlightApproach:
+      "LINEによる配達接近通知と在宅状況の共有を、ドライバー向け画面および経路変更処理へ連携",
+
+    highlightBenefit:
+      "確定した不在先への訪問を避け、一時不在には配送順の変更で対応することで、地域の限られた配送力を有効活用",
+
+    // アーキテクチャ解説
+    architecture:
+      "受取人との接点にはLINEを利用し、回答された在宅状況をスマ配のバックエンドへ送信します。バックエンドは配送データと回答内容を照合し、必要に応じてOSRMを使って配送順と走行経路を再計算します。計算結果はドライバー向けWeb画面へ反映され、現在の配送先、到着予定時刻、変更後の配送順を確認できる構成です。専用アプリを要求しない受取人側と、配送判断に必要な情報を集約したドライバー側を分離して設計しました。",
+
+    // スマ配の構成図
+    architectureFlow: [
+      { label: "受取人", type: "user" },
+      { label: "LINE", type: "platform" },
+      { label: "スマ配 Backend", type: "app" },
+      { label: "OSRM / OpenStreetMap", type: "external" },
+      { label: "ドライバー画面", type: "platform" }
+    ],
+
+    imageUrl: "/images/sumahai-2.jpg",
+
+    galleryImages: [
+      "/videos/sumahai-demo.m4v",
+      "/images/sumahai-3.jpg"
+    ],
+
+    duration: "ハッカソン開発",
+    teamSize: "3名",
+
+    achievement:
+      "最優秀賞",
+
+    myRoles: [
+      "地域課題の調査・整理",
+      "サービス企画",
+      "UI・UX設計",
+      "プロトタイプ開発",
+      "デモ動画制作",
+      "プレゼン資料制作"
+    ],
+
+    contributionRatio: "60%"
+  },
+  {
     id: "fitlink",
     platform: ["Mobile"],
     status: "ONLINE",
@@ -37,7 +125,7 @@ export const PROJECTS_DATA: AppProject[] = [
       { label: "ClipGym (SwiftUI)", type: "app" },
       { label: "SwiftData", type: "external" } // ➔ 現状動いているピュアなローカル完結構成へ
     ],
-    imageUrl: "/images/clipgym-1.jpg",
+    imageUrl: "/images/clipgym-2.jpg",
     galleryImages: [
       "/images/clipgym2.jpg",
       "/images/clipfit2.png",
