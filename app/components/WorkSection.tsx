@@ -236,13 +236,20 @@ const WorkSection = React.forwardRef(
                     </div>
 
                     {/* カード内下部コントロール */}
-                    <div className="shrink-0 mt-3 flex justify-between items-center pt-2.5 border-t border-dashed border-slate-300">
-                      <div className="flex flex-wrap gap-x-1.5 gap-y-0.5 max-w-[65%]">
+                    <div className="shrink-0 mt-3 flex justify-between items-center gap-3 pt-2.5 border-t border-dashed border-slate-300">
+                      <div className="flex flex-wrap gap-x-1.5 gap-y-0.5 max-w-[58%] sm:max-w-[65%]">
                         {project.comments?.map((comment) => (
                           <span key={comment} className="text-[10px] sm:text-xs font-sans text-slate-900 font-extrabold tracking-wide">#{comment}</span>
                         ))}
                       </div>
-                      <span className="text-[10px] sm:text-sm font-black tracking-wider uppercase text-slate-950 group-hover:text-amber-500 flex items-center gap-1 font-sans group-hover:translate-x-1 transition-all">VIEW MORE <span className="text-xs sm:text-sm">→</span></span>
+                      <span
+                        aria-hidden="true"
+                        className="shrink-0 inline-flex items-center gap-1.5 border-2 border-black bg-black px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[9px] sm:text-xs font-black tracking-wider text-white shadow-[3px_3px_0_0_#fbbf24] transition-all duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[5px_5px_0_0_#fbbf24] group-focus-visible:-translate-x-0.5 group-focus-visible:-translate-y-0.5 group-active:translate-x-[2px] group-active:translate-y-[2px] group-active:shadow-none"
+                      >
+                        <span className="sm:hidden">TAP TO OPEN</span>
+                        <span className="hidden sm:inline">VIEW DETAILS</span>
+                        <span className="text-xs sm:text-sm">↗</span>
+                      </span>
                     </div>
 
                   </section>
