@@ -2,6 +2,34 @@ import { AppProject } from "../types/portfolio";
 
 export const PROJECTS_DATA: AppProject[] = [
   {
+    id: "simple-editor",
+    platform: ["Desktop"],
+    status: "OFFLINE",
+    githubUrl: "https://github.com/dustin-ctrl/simple-editor",
+    title: "Simple Editor",
+    subtitle: "書くことだけに、集中する。",
+    year: "2026",
+    role: "個人開発",
+    tech: ["Swift", "SwiftUI", "AppKit", "WidgetKit"],
+    comments: ["macOS", "個人開発", "レトロUI"],
+    overview:
+      "思いついた瞬間に書き始められる、macOS向けの軽量テキストエディタです。平成Macintosh風のUIに、TXT・RTF保存、文字装飾、文字数表示、クイックメモWidgetを備えています。",
+    problem:
+      "多機能なメモアプリよりも、起動してすぐプレーンテキストを書ける軽快な道具が欲しいという個人的な需要から開発しました。",
+    architecture:
+      "SwiftUIとAppKitで構成したmacOSネイティブアプリです。外部ライブラリを使わず、標準フレームワークだけで軽量に実装しています。",
+    highlight:
+      "クラシックMacの意匠を保ちながら、ダークモード、RTF書式、選択文字数、Widgetなど現代のmacOSで使いやすい機能を統合しました。",
+    imageUrl: "/images/simple-editor-promo.png",
+    galleryImages: ["/images/simple-editor-promo.png"],
+    showDetails: false,
+    duration: "個人開発",
+    teamSize: "1名",
+    achievement: "macOSアプリ",
+    myRoles: ["企画", "UI・UXデザイン", "macOSアプリ実装"],
+    contributionRatio: "100%"
+  },
+  {
     id: "sumahai",
     platform: ["Web"],
     status: "OFFLINE",

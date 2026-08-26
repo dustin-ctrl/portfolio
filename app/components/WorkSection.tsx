@@ -142,30 +142,31 @@ const WorkSection = React.forwardRef(
                 const isLeft = offset === -1;
                 const isRight = offset === 1;
                 const projectTitle = project.title.replace(/<[^>]*>/g, "");
+                const hasDetails = project.showDetails !== false;
                 
                 // 💡 非アクティブカードを滑らかに左右へ逃がすスタイル定義
                 let transformStyle = "opacity-0 pointer-events-none scale-75 z-0 invisible";
-                if (isCenter) transformStyle = "opacity-100 z-30 scale-100 translate-x-0 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[14px_14px_0px_0px_rgba(0,0,0,1)] cursor-pointer visible";
+                if (isCenter) transformStyle = "opacity-100 z-30 scale-100 translate-x-0 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[14px_14px_0px_0px_rgba(0,0,0,1)] visible";
                 else if (isLeft) transformStyle = "opacity-25 z-10 scale-85 -translate-x-[42%] sm:-translate-x-[38%] md:-translate-x-[28%] pointer-events-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] visible";
                 else if (isRight) transformStyle = "opacity-25 z-10 scale-85 translate-x-[42%] sm:translate-x-[38%] md:translate-x-[28%] pointer-events-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] visible";
                 
                 return (
                   <section 
                     key={project.id} 
-                    onClick={() => isCenter && onSelectProject(project)} 
+                    onClick={() => isCenter && hasDetails && onSelectProject(project)}
                     onKeyDown={(event) => {
-                      if (!isCenter || (event.key !== "Enter" && event.key !== " ")) return;
+                      if (!isCenter || !hasDetails || (event.key !== "Enter" && event.key !== " ")) return;
                       event.preventDefault();
                       onSelectProject(project);
                     }}
-                    role={isCenter ? "button" : undefined}
-                    tabIndex={isCenter ? 0 : -1}
-                    aria-label={isCenter ? `${projectTitle}の詳細を見る` : undefined}
+                    role={isCenter && hasDetails ? "button" : undefined}
+                    tabIndex={isCenter && hasDetails ? 0 : -1}
+                    aria-label={isCenter && hasDetails ? `${projectTitle}の詳細を見る` : undefined}
                     aria-hidden={!isCenter}
                     onTouchStart={isCenter ? handleTouchStart : undefined}
                     onTouchEnd={isCenter ? handleTouchEnd : undefined}
                     /* 💡 col-start-1 row-start-1 で全カードを同じ位置に重ねることで、アクティブなカードの高さに親が自動追従します */
-                    className={`col-start-1 row-start-1 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group touch-pan-y focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-amber-400
+                    className={`col-start-1 row-start-1 bg-white border-3 sm:border-4 border-black rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 flex flex-col justify-between transition-all duration-500 ease-in-out origin-center group touch-pan-y focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-amber-400 ${isCenter && hasDetails ? "cursor-pointer" : "cursor-default"}
                       min-h-[420px] xs:min-h-[430px] sm:min-h-[470px] md:min-h-[510px] ${transformStyle}`}
                   >
                     
@@ -242,14 +243,32 @@ const WorkSection = React.forwardRef(
                           <span key={comment} className="text-[10px] sm:text-xs font-sans text-slate-900 font-extrabold tracking-wide">#{comment}</span>
                         ))}
                       </div>
-                      <span
-                        aria-hidden="true"
-                        className="shrink-0 inline-flex items-center gap-1.5 border-2 border-black bg-black px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[9px] sm:text-xs font-black tracking-wider text-white shadow-[3px_3px_0_0_#fbbf24] transition-all duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[5px_5px_0_0_#fbbf24] group-focus-visible:-translate-x-0.5 group-focus-visible:-translate-y-0.5 group-active:translate-x-[2px] group-active:translate-y-[2px] group-active:shadow-none"
-                      >
-                        <span className="sm:hidden">TAP TO OPEN</span>
-                        <span className="hidden sm:inline">VIEW DETAILS</span>
-                        <span className="text-xs sm:text-sm">↗</span>
-                      </span>
+                      {hasDetails ? (
+                        <span
+                          aria-hidden="true"
+                          className="shrink-0 inline-flex items-center gap-1.5 border-2 border-black bg-black px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[9px] sm:text-xs font-black tracking-wider text-white shadow-[3px_3px_0_0_#fbbf24] transition-all duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[5px_5px_0_0_#fbbf24] group-focus-visible:-translate-x-0.5 group-focus-visible:-translate-y-0.5 group-active:translate-x-[2px] group-active:translate-y-[2px] group-active:shadow-none"
+                        >
+                          <span className="sm:hidden">TAP TO OPEN</span>
+                          <span className="hidden sm:inline">VIEW DETAILS</span>
+                          <span className="text-xs sm:text-sm">↗</span>
+                        </span>
+                      ) : project.githubUrl ? (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(event) => event.stopPropagation()}
+                          className="shrink-0 inline-flex items-center gap-1.5 border-2 border-black bg-black px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[9px] sm:text-xs font-black tracking-wider text-white shadow-[3px_3px_0_0_#fbbf24] transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#fbbf24] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-amber-400 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                          aria-label={`${projectTitle}のGitHubを開く`}
+                        >
+                          GITHUB
+                          <span className="text-xs sm:text-sm" aria-hidden="true">↗</span>
+                        </a>
+                      ) : (
+                        <span className="shrink-0 border-2 border-black bg-white px-2.5 py-1.5 sm:px-3.5 sm:py-2 font-mono text-[9px] sm:text-xs font-black tracking-wider text-black">
+                          PERSONAL APP
+                        </span>
+                      )}
                     </div>
 
                   </section>

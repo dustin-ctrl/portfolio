@@ -9,7 +9,7 @@ export interface ArchitectureStep {
 // app/types/portfolio.ts
 export interface AppProject {
   id: string;
-  platform: ("Web" | "ServiceNow" | "Mobile" | "Art")[];
+  platform: ("Web" | "ServiceNow" | "Mobile" | "Desktop" | "Art")[];
   status: "ONLINE" | "OFFLINE";
   linkUrl?: string; // ONLINEの場合の、実際に触れるURL
   githubUrl?: string; 
@@ -26,6 +26,7 @@ export interface AppProject {
   highlight: string;
   imageUrl: string; // 表紙用のメイン画像
   galleryImages: string[]; // モーダル内のスライダー等で使用する画像配列（1枚の場合も同じパスを複数入れる運用）
+  showDetails?: boolean; // false の場合はカードのみ表示し、詳細モーダルを開かない
 
   // 📜 既存の規約・ポリシー周りのURL
   termsUrl?: string;   // 利用規約用のオプショナルなURL（/terms など）
