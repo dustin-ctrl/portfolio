@@ -93,10 +93,11 @@ export const PROJECTS_DATA: AppProject[] = [
       { label: "ドライバー画面", type: "platform" }
     ],
 
-    imageUrl: "/images/sumahai-2.jpg",
+    imageUrl: "/images/smahai.png",
 
     galleryImages: [
       "/videos/sumahai-demo.m4v",
+      "/images/sumahai-2.jpg",
       "/images/sumahai-3.jpg"
     ],
 
