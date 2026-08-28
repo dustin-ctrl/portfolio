@@ -55,7 +55,7 @@ export default function Header({ activeSection, scrollToTop }: HeaderProps) {
             className={`pb-0.5 border-b-3 sm:border-b-4 transition-all duration-200 ${
               activeSection === "work"
                 ? "border-black text-black scale-105"
-                : "border-transparent text-slate-400 hover:text-slate-900"
+                : "border-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
             WORK
@@ -67,7 +67,7 @@ export default function Header({ activeSection, scrollToTop }: HeaderProps) {
             className={`pb-0.5 border-b-3 sm:border-b-4 transition-all duration-200 ${
               activeSection === "profile"
                 ? "border-black text-black scale-105"
-                : "border-transparent text-slate-400 hover:text-slate-900"
+                : "border-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
             PROFILE
@@ -82,11 +82,11 @@ export default function Header({ activeSection, scrollToTop }: HeaderProps) {
             className={`pb-0.5 border-b-3 sm:border-b-4 transition-all duration-200 uppercase flex items-center gap-1 cursor-pointer ${
               isSnsOpen
                 ? "border-black text-black scale-105"
-                : "border-transparent text-slate-400 hover:text-slate-900"
+                : "border-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
             <span>CONTACT</span>
-            <span className={`inline-block text-[8px] sm:text-[10px] font-sans transition-transform duration-200 ${isSnsOpen ? "rotate-180 text-black" : "text-slate-400"}`}>
+            <span className={`inline-block text-[8px] sm:text-[10px] font-sans transition-transform duration-200 ${isSnsOpen ? "rotate-180 text-black" : "text-slate-600"}`}>
               ▼
             </span>
           </button>

@@ -19,7 +19,7 @@ export default function Opening({
         items-center
         justify-center
         transition-opacity
-        duration-700
+        duration-400
         ease-in-out
         ${isFadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}
       `}
@@ -32,7 +32,7 @@ export default function Opening({
             md:text-9xl
             lg:text-[11rem]
             transition-colors
-            duration-1000
+            duration-600
             ease-in-out
             [text-stroke:1.5px_black]
             md:[text-stroke:2px_black]
@@ -53,7 +53,7 @@ export default function Opening({
             mt-3
             sm:mt-4
             transition-colors
-            duration-1000
+            duration-600
             ease-in-out
             [text-stroke:1.5px_black]
             md:[text-stroke:2px_black]

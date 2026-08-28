@@ -127,7 +127,7 @@ const WorkSection = React.forwardRef(
           )}
 
           {filteredProjects.length === 0 ? (
-            <div className="font-mono text-sm font-black text-slate-400 tracking-wider flex-1 text-center py-20">
+            <div className="font-mono text-sm font-black text-slate-600 tracking-wider flex-1 text-center py-20">
               NO PROJECTS FOUND IN THIS CATEGORY.
             </div>
           ) : (
@@ -198,10 +198,10 @@ const WorkSection = React.forwardRef(
                             {project.status === "ONLINE" ? (
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-wider rounded border-2 border-black bg-emerald-50 text-emerald-700"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />ONLINE</span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-wider rounded border-2 border-black bg-slate-100 text-slate-500"><span className="w-1.5 h-1.5 rounded-full bg-slate-400" />ARCHIVE</span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] sm:text-xs font-black tracking-wider rounded border-2 border-black bg-slate-100 text-slate-600"><span className="w-1.5 h-1.5 rounded-full bg-slate-400" />ARCHIVE</span>
                             )}
                           </div>
-                          <span className="text-[10px] sm:text-sm font-mono font-black text-slate-400">{project.year}</span>
+                          <span className="text-[10px] sm:text-sm font-mono font-black text-slate-600">{project.year}</span>
                         </div>
                         
                         <h3 
@@ -211,7 +211,7 @@ const WorkSection = React.forwardRef(
 
                         {/* TITLEの直下にSUBTITLEを表示 */}
                         {project.subtitle && (
-                          <p className="text-[10px] sm:text-xs font-mono font-bold text-slate-400 tracking-wide mt-1 line-clamp-1 uppercase">
+                          <p className="text-[10px] sm:text-xs font-mono font-bold text-slate-600 tracking-wide mt-1 line-clamp-1 uppercase">
                             {project.subtitle}
                           </p>
                         )}
@@ -223,8 +223,7 @@ const WorkSection = React.forwardRef(
                           src={project.imageUrl} 
                           alt={project.title} 
                           fill 
-                          sizes="(max-w-md) 88vw, 720px" 
-                          className={`group-hover:scale-[1.03] transition-transform duration-500
+                          sizes="(max-width: 640px) 88vw, 720px"                          className={`group-hover:scale-[1.03] transition-transform duration-500
                             ${(Array.isArray(project.platform) ? project.platform : [project.platform]).some(p => String(p).toLowerCase().includes("mobile")) ? "object-contain p-1.5" : "object-cover object-center"}`} 
                           unoptimized={project.imageUrl.startsWith("http")} 
                         />
@@ -300,14 +299,21 @@ const WorkSection = React.forwardRef(
               ←
             </button>
 
-            <div className="flex gap-2">
+            <div className="flex">
               {filteredProjects.map((_, i) => (
-                <button 
-                  key={i} 
-                  onClick={() => setCurrentIndex(i)} 
-                  className={`h-2 rounded-full border-2 border-black transition-all duration-300 cursor-pointer ${i === currentIndex ? "w-6 bg-black" : "w-2 bg-white"}`} 
-                  aria-label={`Go to slide ${i + 1}`} 
-                />
+                <button
+                  key={i}
+                  onClick={() => setCurrentIndex(i)}
+                  className="h-6 w-6 flex items-center justify-center cursor-pointer"
+                  aria-label={"Go to slide " + (i + 1)}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={i === currentIndex
+                      ? "h-2 w-6 rounded-full border-2 border-black bg-black transition-all duration-300"
+                      : "h-2 w-2 rounded-full border-2 border-black bg-white transition-all duration-300"}
+                  />
+                </button>
               ))}
             </div>
 

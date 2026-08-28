@@ -87,9 +87,9 @@ const ProfileSection = React.forwardRef(
           {/* ─── 01 / WHO AM I セクション ─── */}
           <div className="w-full shrink-0 text-left mb-12 sm:mb-20">
             <div className="mb-6 sm:mb-8 select-none">
-              <h4 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wider text-slate-900 font-sans uppercase">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wider text-slate-900 font-sans uppercase">
                 01 / WHO AM I
-              </h4>
+              </h3>
             </div>
 
             <div className="max-w-3xl text-left flex flex-col items-start w-full">
@@ -113,7 +113,7 @@ const ProfileSection = React.forwardRef(
                         alt="Dustin" 
                         fill 
                         className="object-cover object-center scale-125 group-hover:scale-135 group-active:scale-135 transition-transform duration-300"
-                        unoptimized
+                        sizes="(max-width: 640px) 120px, 160px"
                       />
                     </div>
 
@@ -164,13 +164,13 @@ const ProfileSection = React.forwardRef(
                   
                   {/* NAME */}
                   <div className="grid grid-cols-3 border-b-2 border-black/10 pb-3 items-center">
-                    <span className="font-mono font-black text-slate-400 text-[10px] sm:text-xs tracking-wider">NAME</span>
+                    <span className="font-mono font-black text-slate-600 text-[10px] sm:text-xs tracking-wider">NAME</span>
                     <span className="col-span-2 font-black text-slate-900 text-sm sm:text-lg">Kotaro Takahashi</span>
                   </div>
                   
                   {/* ROLE */}
                   <div className="grid grid-cols-3 border-b-2 border-black/10 pb-3 items-start">
-                    <span className="font-mono font-black text-slate-400 text-[10px] sm:text-xs tracking-wider pt-0.5">ROLE</span>
+                    <span className="font-mono font-black text-slate-600 text-[10px] sm:text-xs tracking-wider pt-0.5">ROLE</span>
                     <span className="col-span-2 font-black text-slate-900 text-sm sm:text-lg leading-snug">
                       Master&apos;s Student
                     </span>
@@ -178,7 +178,7 @@ const ProfileSection = React.forwardRef(
                   
                   {/* LOCATION */}
                   <div className="grid grid-cols-3 border-b-2 border-black/10 pb-3 items-center">
-                    <span className="font-mono font-black text-slate-400 text-[10px] sm:text-xs tracking-wider">LOCATION</span>
+                    <span className="font-mono font-black text-slate-600 text-[10px] sm:text-xs tracking-wider">LOCATION</span>
                     <span className="col-span-2 font-black text-slate-900 text-sm sm:text-lg">
                       Hiroshima, Japan
                     </span>
@@ -186,7 +186,7 @@ const ProfileSection = React.forwardRef(
                   
                   {/* BORN */}
                   <div className="grid grid-cols-3 pt-1 items-center">
-                    <span className="font-mono font-black text-slate-400 text-[10px] sm:text-xs tracking-wider">BORN</span>
+                    <span className="font-mono font-black text-slate-600 text-[10px] sm:text-xs tracking-wider">BORN</span>
                     <span className="col-span-2 font-black text-slate-900 text-sm sm:text-lg tracking-wider">
                       2001
                     </span>
@@ -201,14 +201,14 @@ const ProfileSection = React.forwardRef(
           {/* ─── 02 / STORY （ここに専用のスクロール検知 ref を設置） ─── */}
           <div ref={storyRef} className="w-full shrink-0 text-left mb-12 sm:mb-20">
             <div className="mb-6 sm:mb-8 select-none border-t-4 border-black pt-6">
-              <h4 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wider text-slate-900 font-sans uppercase">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wider text-slate-900 font-sans uppercase">
                 02 / STORY 
-              </h4>
+              </h3>
             </div>
 
             <div className="max-w-3xl text-left flex flex-col items-start w-full">
               {/* 💡 02付近に来た瞬間に、子要素のアニメーションが一斉に1回だけ発火します */}
-              <h3 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 leading-[1.4] text-left mb-6 sm:mb-10 overflow-hidden">
+              <h4 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 leading-[1.4] text-left mb-6 sm:mb-10 overflow-hidden">
                 <span className="relative inline-block px-2 pt-2 pb-3 mt-1 sm:mt-2 z-0 group/title">
                   
                   {/* 🖌️ 背景のブラシ・絵の具風マーカー線（左から右へシャッ！と引かれる） */}
@@ -233,7 +233,7 @@ const ProfileSection = React.forwardRef(
                   </span>
 
                 </span>
-              </h3>
+              </h4>
               
               <div className="space-y-4 sm:space-y-6 text-[11px] sm:text-lg text-slate-600 font-medium leading-relaxed max-w-2xl text-left">
                 <p>
@@ -256,15 +256,15 @@ const ProfileSection = React.forwardRef(
           {/* ─── 03 / SKILLS & ACHIEVEMENTS ─── */}
           <div className="w-full shrink-0 text-left mb-12 sm:mb-20">
             <div className="mb-6 sm:mb-8 select-none border-t-4 border-black pt-6">
-              <h4 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wider text-slate-900 font-sans uppercase">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-wider text-slate-900 font-sans uppercase">
                 03 / SKILLS & ACHIEVEMENTS 
-              </h4>
+              </h3>
             </div>
             
             <div className="w-full border-t border-slate-200 font-sans text-xs sm:text-base">
               <div className="grid grid-cols-1 md:grid-cols-12 py-5 border-b border-slate-200 items-start gap-3 md:gap-4">
                 <div className="md:col-span-4 select-none">
-                  <span className="text-[10px] sm:text-xs font-black tracking-widest text-slate-400 uppercase font-mono block mb-1">
+                  <span className="text-[10px] sm:text-xs font-black tracking-widest text-slate-600 uppercase font-mono block mb-1">
                     01 / TECHNOLOGIES USED
                   </span>
                   <div className="font-black text-slate-900 tracking-wider">DEVELOPMENT</div>
@@ -280,7 +280,7 @@ const ProfileSection = React.forwardRef(
 
               <div className="grid grid-cols-1 md:grid-cols-12 py-5 border-b border-slate-200 items-start gap-3 md:gap-4">
                 <div className="md:col-span-4 select-none">
-                  <span className="text-[10px] sm:text-xs font-black tracking-widest text-slate-400 uppercase font-mono block mb-1">
+                  <span className="text-[10px] sm:text-xs font-black tracking-widest text-slate-600 uppercase font-mono block mb-1">
                     02 / PLATFORM EXPERTISE
                   </span>
                   <div className="font-black text-slate-900 tracking-wider">PLATFORM</div>
@@ -289,7 +289,7 @@ const ProfileSection = React.forwardRef(
                   <span className="px-3 py-1 bg-slate-900 text-white text-xs font-black tracking-wider border-2 border-black rounded-md shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] uppercase">
                     ServiceNow
                   </span>
-                  <span className="text-[11px] font-bold text-slate-400 font-mono mt-1">
+                  <span className="text-[11px] font-bold text-slate-600 font-mono mt-1">
                     (App Engine / Flow Designer)
                   </span>
                 </div>
@@ -297,7 +297,7 @@ const ProfileSection = React.forwardRef(
 
               <div className="grid grid-cols-1 md:grid-cols-12 py-5 border-b border-slate-300 items-start gap-3 md:gap-4">
                 <div className="md:col-span-4 select-none">
-                  <span className="text-[10px] sm:text-xs font-black tracking-widest text-slate-400 uppercase font-mono block mb-1">
+                  <span className="text-[10px] sm:text-xs font-black tracking-widest text-slate-600 uppercase font-mono block mb-1">
                     03 / TRACK RECORD & AWARDS
                   </span>
                   <div className="font-black text-slate-900 tracking-wider">ACHIEVEMENTS</div>

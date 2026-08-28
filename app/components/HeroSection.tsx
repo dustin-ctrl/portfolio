@@ -31,9 +31,9 @@ export default function HeroSection({ isReady }: HeroSectionProps) {
           </div>
 
           <p
-            aria-label="はじめまして。"
             className="max-w-4xl text-[2.65rem] leading-[0.98] sm:text-6xl md:text-6xl font-black tracking-[-0.06em] text-slate-950"
           >
+            <span className="sr-only">はじめまして。</span>
             <span
               aria-hidden="true"
               className={`relative inline-block mt-2 whitespace-nowrap ${isReady ? "hero-throw-ready" : ""}`}
@@ -71,7 +71,7 @@ export default function HeroSection({ isReady }: HeroSectionProps) {
       </div>
 
       <div className="mt-10 border-y-3 border-black py-3 font-mono text-[10px] sm:text-xs font-black tracking-wide text-slate-800">
-        <span className="text-amber-600">RECENT AWARDS</span>
+        <span className="text-amber-700">RECENT AWARDS</span>
         <span aria-hidden="true" className="mx-2 text-slate-300">{"//"}</span>
         <a
           href={recentAward.href}

@@ -37,15 +37,15 @@ export function HomeContent() {
 
     const outlineTimer = setTimeout(() => {
       setIsOutline(true);
-    }, 400);
+    }, 250);
 
     const fadeOutTimer = setTimeout(() => {
       setIsFadeOut(true);
-    }, 1600);
+    }, 900);
 
     const removeTimer = setTimeout(() => {
       setIsOpening(false);
-    }, 2300);
+    }, 1300);
 
     return () => {
       clearTimeout(outlineTimer);
@@ -148,7 +148,7 @@ export function HomeContent() {
 
         {/* 3. 共通フッター */}
         {/* 💡 修正：PROFILEのすぐ下に綺麗に収まるよう、上のマージン（mt-16〜32）を調整 */}
-        <footer className="w-full max-w-5xl mx-auto px-4 sm:px-12 md:px-24 py-12 sm:py-20 mt-16 sm:mt-28 md:mt-32 border-t-4 border-black text-[10px] sm:text-xs font-bold text-slate-400 flex justify-between select-none font-mono">
+        <footer className="w-full max-w-5xl mx-auto px-4 sm:px-12 md:px-24 py-12 sm:py-20 mt-16 sm:mt-28 md:mt-32 border-t-4 border-black text-[10px] sm:text-xs font-bold text-slate-600 flex justify-between select-none font-mono">
           <p>© 2026 KOTARO TAKAHASHI.</p>
           <a href="#top" onClick={scrollToTop} className="text-slate-800 hover:text-blue-600 transition-colors tracking-widest">
             BACK TO TOP ↑
