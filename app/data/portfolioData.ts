@@ -198,7 +198,7 @@ export const PROJECTS_DATA: AppProject[] = [
       { label: "hinavi (PHP API / Backend)", type: "app" },
       { label: "MySQL", type: "external" }
     ],
-    imageUrl: "/images/hinavi.jpg", 
+    imageUrl: "/images/hinavi-thumbnail-v4.png",
     galleryImages: [
       "/images/hinavi2.jpg",         
       "/images/hinavi3.jpg",   
