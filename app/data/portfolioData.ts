@@ -154,7 +154,7 @@ export const PROJECTS_DATA: AppProject[] = [
       { label: "ClipGym (SwiftUI)", type: "app" },
       { label: "SwiftData", type: "external" } // ➔ 現状動いているピュアなローカル完結構成へ
     ],
-    imageUrl: "/images/clipgym-2.jpg",
+    imageUrl: "/images/clipgym-thumbnail-v2.png",
     galleryImages: [
       "/images/clipgym2.jpg",
       "/images/clipfit2.png",
