@@ -8,8 +8,8 @@ export interface Achievement {
 export const ACHIEVEMENTS: Achievement[] = [
   {
     id: "aws-2026-bset-award",
-    title: "広島県 地域創生・社会課題解決AIコンテスト2026 最優秀賞",
-    href: "",
+    title: "AWS 地域創生・社会課題解決AIコンテスト2026 最優秀賞",
+    href: "https://aws-experience.com/apj/smb/event/11dd4899-3390-4cc9-973d-af55aea9d940",
   },
   {
     id: "jphacks-2025-sponsor-award",
