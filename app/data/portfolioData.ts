@@ -2,6 +2,27 @@ import { AppProject } from "../types/portfolio";
 
 export const PROJECTS_DATA: AppProject[] = [
   {
+    id: "kago-os",
+    platform: ["Web", "Mobile"],
+    status: "ONLINE",
+    githubUrl: "https://github.com/jphacks/hs_2604",
+    demoUrl: "https://youtu.be/XD6icBN-xMQ",
+    title: "KAGO/OS",
+    subtitle: "いつもの買い物にちょうどいい提案を",
+    year: "2026",
+    role: "ハッカソン開発",
+    tech: ["Next.js", "React", "TypeScript", "Supabase"],
+    comments: ["JPHACKS2026", "リテールテック", "販促DX"],
+    overview:
+      "スマホで商品をスキャンしながら買い物し、カゴの中身に合うおすすめやクーポンを受け取れる仕組みです。店舗・メーカーは反応や購入結果を振り返り、次の販促改善につなげられます。",
+    problem: "",
+    architecture: "",
+    highlight: "",
+    imageUrl: "/images/kago-concept.jpg",
+    galleryImages: ["/images/kago-concept.jpg"],
+    showDetails: false,
+  },
+  {
     id: "simple-editor",
     platform: ["Desktop"],
     status: "OFFLINE",

@@ -219,14 +219,39 @@ const WorkSection = React.forwardRef(
                       
                       {/* 画像エリア */}
                       <div className="w-full aspect-video relative bg-white rounded-lg sm:rounded-xl overflow-hidden border-2 border-black mb-2.5 shrink-0 mx-auto">
-                        <Image 
-                          src={project.imageUrl} 
-                          alt={project.title} 
-                          fill 
-                          sizes="(max-width: 640px) 88vw, 720px"                          className={`group-hover:scale-[1.03] transition-transform duration-500
-                            ${(Array.isArray(project.platform) ? project.platform : [project.platform]).some(p => String(p).toLowerCase().includes("mobile")) ? "object-contain p-1.5" : "object-cover object-center"}`} 
-                          unoptimized={project.imageUrl.startsWith("http")} 
-                        />
+                        {!hasDetails && project.demoUrl ? (
+                          <a
+                            href={project.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${projectTitle}のデモ動画を開く`}
+                            className="absolute inset-0 z-10 block focus-visible:outline-4 focus-visible:outline-offset-[-4px] focus-visible:outline-amber-400"
+                          >
+                            <Image
+                              src={project.imageUrl}
+                              alt={`${projectTitle}のコンセプト画像`}
+                              fill
+                              preload={index === 0}
+                              sizes="(max-width: 640px) 88vw, 720px"
+                              className="object-cover object-center transition-transform duration-500 hover:scale-[1.03]"
+                              unoptimized={project.imageUrl.startsWith("http")}
+                            />
+                            <span className="absolute bottom-2 right-2 border-2 border-black bg-black px-2.5 py-1.5 font-mono text-[9px] sm:text-xs font-black tracking-wider text-white shadow-[3px_3px_0_0_#fbbf24]">
+                              PLAY DEMO ↗
+                            </span>
+                          </a>
+                        ) : (
+                          <Image
+                            src={project.imageUrl}
+                            alt={project.title}
+                            fill
+                            preload={index === 0}
+                            sizes="(max-width: 640px) 88vw, 720px"
+                            className={`group-hover:scale-[1.03] transition-transform duration-500
+                              ${(Array.isArray(project.platform) ? project.platform : [project.platform]).some(p => String(p).toLowerCase().includes("mobile")) ? "object-contain p-1.5" : "object-cover object-center"}`}
+                            unoptimized={project.imageUrl.startsWith("http")}
+                          />
+                        )}
                       </div>
 
                       {/* 表面の「概要」 */}
